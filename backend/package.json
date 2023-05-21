@@ -1,20 +1,22 @@
 {
-  "type": "module",
-  "name": "backend",
+  "name": "respirar",
   "version": "1.0.0",
-  "description": "",
+  "description": "respirar",
   "main": "index.js",
   "scripts": {
-    "start": "node src/index.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "run": "nodemon src/main/index.js"
   },
-  "keywords": [],
-  "author": "",
+  "author": "Mauro Candotti",
   "license": "ISC",
   "dependencies": {
-    "body-parser": "^1.20.1",
+    "body-parser": "^1.19.0",
     "cors": "^2.8.5",
-    "express": "^4.18.2",
-    "jsonwebtoken": "^8.5.1"
+    "express": "^4.17.1",
+    "fiware-orion-client": "^0.5.9",
+    "knex": "^2.4.2",
+    "mysql": "^2.18.1"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
