@@ -1,16 +1,16 @@
 import apiService from './apiService'
 
 export default {
-    async getParkingsEmail(email) {
+    async getStation() {
         try {
-            console.log(email);
-            const res = await apiService.apiClient.get('/parkings', { params: { email: email } });
+            console.log("Llamo a getStation");
+            const res = await apiService.apiClient.get('/station');
             console.log(res.data);
             return res.data
         } catch (e) {
-            throw "Error de conexion"
+            throw e
         }
-    },
+    }/* ,
     async getParkings(locationId) {
         try {
             console.log(locationId);
@@ -56,6 +56,6 @@ export default {
         } catch (e) {
             throw "Error de conexion"
         }
-    }
+    } */
 
 }

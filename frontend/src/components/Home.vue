@@ -7,32 +7,32 @@
         <h1></h1><br />
         <div class="card">
             <div class="card-header">
-                Ver Estaciones
+                Sprint 1
             </div>
             <div class="card-body">
-                <h5 class="card-title">Ver Estaciones Geo-Localizadas</h5>
-                <p class="card-text">para visualizar las estaciones en un mapa (Modulo Visualizacion y Mapas)</p>
-                <a href="/register" class="btn btn-secondary">Registrate</a>
+                <h5 class="card-title">Ver Estaciones</h5>
+                <p class="card-text">Visualizar las estaciones registradas</p>
+                <a href="/station" class="btn btn-secondary">Estaciones</a>
             </div>
         </div>
         <div class="card">
             <div class="card-header">
-                Administra tus Estaciones
+                Sprint 2
             </div>
             <div class="card-body">
-                <h5 class="card-title">Registra tus Estaciones RespirAR</h5>
-                <p class="card-text">para empezar a registrar las mediciones medioambientales, obtenidas de tus dispositivos RespirAR (LoraWan y Wifi)</p>
-                <a href="/login" class="btn btn-primary">Ingresa</a>
+                <h5 class="card-title">Crud Estaciones</h5>
+                <p class="card-text">Registrar nuevas estaciones RespirAR (LoraWan y Wifi)</p>
+                <a href="/" class="btn btn-primary">ToDo</a>
             </div>
         </div>
         <div class="card">
             <div class="card-header">
-                Administra tus Solicitudes
+                Sprint 3
             </div>
             <div class="card-body">
-                <h5 class="card-title">Solicita la registracion de tus Estaciones Externas</h5>
-                <p class="card-text">para empezar a registrar las mediciones medioambientales, obtenidas de tus dispositivos externos</p>
-                <a href="/login" class="btn btn-primary">Ingresa</a>
+                <h5 class="card-title">Administrar Solicitudes </h5>
+                <p class="card-text">Solicitar la registracion de nuevas Estaciones Externas</p>
+                <a href="/" class="btn btn-primary">ToDo</a>
             </div>
         </div>
     </div>
