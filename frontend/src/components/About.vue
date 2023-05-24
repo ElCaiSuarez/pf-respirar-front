@@ -12,7 +12,7 @@
             <h5>● Gaglio Juan Cruz</h5>
             <h5>● Monzón Esteban Nicolás</h5>
             <h5>● Rinaldi Celina</h5>
-            <h5>● Suarez Juan Carlos... </h5>
+            <h5>● Suarez Juan Carlos </h5>
         </div>
     </div>
 </template>
