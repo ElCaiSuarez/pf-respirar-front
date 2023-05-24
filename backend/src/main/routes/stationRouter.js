@@ -1,15 +1,18 @@
 const Routes = require('express');
-const stationCreateController = require('../controllers/createStationController');
-const stationListController = require('../controllers/listStationController');
+const stationController = require('../controllers/stationController');
 
 const router = Routes();
 
-router.get('/list', (req, res) => {
-    return stationListController.listStations(req, res);
+router.get('/', (req, res) => {
+    return stationController.listStations(req, res);
 });
 
-router.post('/create', async (req, res) => {
-    return await stationCreateController.createStation(req, res);
+router.get('/:id', (req, res) => {
+    return stationController.getStationById(req, res);
+});
+
+router.post('/', async (req, res) => {
+    return await stationController.createStation(req, res);
 });
 
 module.exports = router;

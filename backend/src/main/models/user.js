@@ -1,13 +1,14 @@
 const knex = require("../knex");
-const tableName = 'station';
-const Stations = new Map();
+const tableName = 'user';
+const Users = new Map();
+Users.set(1, {id: 1, username: "juancarlos", email: "juancarlos@gmail.com"})
 
 const save = async (data) => {
     try {
         //await knex(tableName)
           //  .insert(data)
-        data.id = Stations.size + 1;
-        Stations.set(data.id, data)
+        data.id = Users.size + 1;
+        Users.set(data.id, data)
     } catch (error) {
         throw error;
     }
@@ -16,16 +17,16 @@ const save = async (data) => {
 const getAll = async () => {
     try {    
         //return await knex(tableName);
-        return Array.from(Stations.values());
+        return Array.from(Users.values());
     } catch (error) {
         throw error;
     }
 }
 
-const getById = async (stationId) => {
+const getById = async (userId) => {
     try {    
         //return await knex(tableName);
-        return Stations.get(stationId);
+        return Users.get(userId);
     } catch (error) {
         throw error;
     }
