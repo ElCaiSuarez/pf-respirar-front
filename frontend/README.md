@@ -1,6 +1,6 @@
-# estacionapp
+# RespirAR - Modulo Estaciones
+Proyecto Link - ORT
 
-This template should help get you started developing with Vue 3 in Vite.
 
 
 ## Recommended IDE Setup
@@ -20,11 +20,13 @@ npm install
 ### Compile and Hot-Reload for Development
 
 FRONT:
-```sh
+
 npm run dev
-```
+
 BACK:
+
 npm run-script run
+
 Endpoints:
 localhost:3000/station/
 localhost:3000/station/?userId=1
@@ -34,7 +36,11 @@ POST Body:
     "description": "Text station description",
     "userId": 2
 }
-
+localhost:3000/user
+ {
+    "username": "juancarlos",
+    "email": "juancarlos@gmail.com"
+}
 ### Compile and Minify for Production
 
 ```sh
