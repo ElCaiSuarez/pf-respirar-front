@@ -25,6 +25,15 @@ npm run dev
 ```
 BACK:
 npm run-script run
+Endpoints:
+localhost:3000/station/
+localhost:3000/station/?userId=1
+POST Body:
+{
+    "name": "Text station",
+    "description": "Text station description",
+    "userId": 2
+}
 
 ### Compile and Minify for Production
 

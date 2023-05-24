@@ -28,7 +28,7 @@ export default {
             <ul class="navbar-nav me-auto mb-2 mb-lg-0" >
               <li class="nav-item"><RouterLink class="nav-link" to="/about">Sobre Nosotros</RouterLink></li>
               <li class="nav-item"><RouterLink class="nav-link" to="/station">Estaciones</RouterLink></li>
-              <li class="nav-item"><RouterLink class="nav-link" to="/">Mis Estaciones</RouterLink></li>
+              <li class="nav-item"><RouterLink class="nav-link" to="/mystations">Mis Estaciones</RouterLink></li>
               <li class="nav-item"><RouterLink class="nav-link" to="/">Mis Solicitudes</RouterLink></li>
             </ul>
           </div>

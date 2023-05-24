@@ -8,8 +8,7 @@ async function createStation(req,res) {
 
 async function listStations(req, res) {
     var stations = await Station.getAll();
-    
-    const userId = req.query.userid;
+    const userId = req.query.userId;//Modifico Query userid a userId
     if (userId && userId.trim() !== '') 
     {
         stations = stations.filter(st => st.userId === parseInt(userId));

@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
 import StationView from '../views/StationView.vue'
+import MyStationsView from '../views/MyStationsView.vue'
 import NotFoundView from '../views/NotFoundView.vue'
 
 const router = createRouter({
@@ -15,6 +16,11 @@ const router = createRouter({
       path: '/station',
       name: 'station',
       component: StationView
+    },
+    {
+      path: '/mystations',
+      name: 'mystations',
+      component: MyStationsView
     },
     {
       path: '/:pathMatch(.*)*',

@@ -12,7 +12,7 @@
             <div class="card-body">
                 <h5 class="card-title">Ver Estaciones</h5>
                 <p class="card-text">Visualizar las estaciones registradas</p>
-                <a href="/station" class="btn btn-secondary">Estaciones</a>
+                <a href="/station" class="btn btn-primary">Estaciones</a>
             </div>
         </div>
         <div class="card">
@@ -22,7 +22,7 @@
             <div class="card-body">
                 <h5 class="card-title">Crud Estaciones</h5>
                 <p class="card-text">Registrar nuevas estaciones RespirAR (LoraWan y Wifi)</p>
-                <a href="/" class="btn btn-primary">ToDo</a>
+                <a href="/mystations" class="btn btn-primary">Mis Estaciones</a>
             </div>
         </div>
         <div class="card">
@@ -32,7 +32,7 @@
             <div class="card-body">
                 <h5 class="card-title">Administrar Solicitudes </h5>
                 <p class="card-text">Solicitar la registracion de nuevas Estaciones Externas</p>
-                <a href="/" class="btn btn-primary">ToDo</a>
+                <a href="/" class="btn btn-secondary">ToDo</a>
             </div>
         </div>
     </div>
