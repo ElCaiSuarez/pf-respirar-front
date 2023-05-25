@@ -1,14 +1,15 @@
 const knex = require("../knex");
-const tableName = 'station';
-const Stations = new Map();
+const tableName = 'application';
+const Applications = new Map();
 
 const create = async (data) => {
     try {
         //await knex(tableName)
           //  .insert(data)
-        data.id = Stations.size + 1;
+        data.id = Applications.size + 1;
         data.deleted = false;
-        Stations.set(data.id, data)
+        data.status = "PENDING";
+        Applications.set(data.id, data)
     } catch (error) {
         throw error;
     }
@@ -17,7 +18,7 @@ const save = async (data) => {
     try {
         //await knex(tableName)
           //  .insert(data)
-        Stations.set(data.id, data)
+        Applications.set(data.id, data)
     } catch (error) {
         throw error;
     }
@@ -28,7 +29,7 @@ const erase = async (data) => {
         //await knex(tableName)
           //  .insert(data)
         data.deleted = true;
-        Stations.set(data.id, data)
+        Applications.set(data.id, data)
     } catch (error) {
         throw error;
     }
@@ -37,16 +38,16 @@ const erase = async (data) => {
 const getAll = async () => {
     try {    
         //return await knex(tableName);
-        return Array.from(Stations.values());
+        return Array.from(Applications.values());
     } catch (error) {
         throw error;
     }
 }
 
-const getById = async (stationId) => {
+const getById = async (applicationId) => {
     try {    
         //return await knex(tableName);
-        return Stations.get(stationId);
+        return Applications.get(applicationId);
     } catch (error) {
         throw error;
     }

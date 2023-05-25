@@ -15,6 +15,7 @@ app.get('/', (req, res) => {
 
 app.use('/station', Routes.stationRouter);
 app.use('/user', Routes.userRouter);
+app.use('/application', Routes.applicationRouter);
 
 app.listen(listeningPort, () => {
   console.log("El servidor está inicializado en el puerto " + listeningPort);
