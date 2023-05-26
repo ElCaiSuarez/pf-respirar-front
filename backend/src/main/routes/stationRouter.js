@@ -11,6 +11,10 @@ router.get('/:id', (req, res) => {
     return stationController.getStationById(req, res);
 });
 
+router.delete('/:id', (req, res) => {
+    return stationController.deleteById(req, res);
+});
+
 router.post('/', async (req, res) => {
     return await stationController.createStation(req, res);
 });
