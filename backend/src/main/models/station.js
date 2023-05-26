@@ -30,6 +30,7 @@ const erase = async (data) => {
         data.deleted = true;
         Stations.set(data.id, data)
     } catch (error) {
+        console.log("ERROR EN erase")
         throw error;
     }
 }

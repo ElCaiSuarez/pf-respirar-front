@@ -32,8 +32,9 @@ export default {
         }
     },
     async deleteStation(station) {
+        const query = "/station/" + station.id
         try {
-            let saved = await apiService.apiClient.delete('/station', { params: { id: station.id } });
+            let saved = await apiService.apiClient.delete(query);
             console.log("El backend devolvio el siguiente mensaje: " + saved.data);
             return saved.data;
 

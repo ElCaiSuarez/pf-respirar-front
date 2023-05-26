@@ -10,6 +10,7 @@
                             <th scope="col">Nombre</th>
                             <th scope="col">Descripcion</th>
                             <th scope="col">Usuario</th>
+                            <th scope="col">Tipo</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -18,6 +19,7 @@
                             <td>{{station.name}}</td>
                             <td>{{station.description}}</td>
                             <td>{{station.userId}}</td>
+                            <td>{{station.type}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -42,6 +44,8 @@ export default {
             this.stations = res
             console.log(this.stations);
         });
+        
+        
     }
 }
 </script>

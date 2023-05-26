@@ -32,7 +32,8 @@
                             <th scope="col">#</th>
                             <th scope="col">Nombre</th>
                             <th scope="col">Descripcion</th>
-                            <th scope="col">Usuario</th>
+                            
+                            <th scope="col">Tipo</th>
                             <th><button @click="mostrarCrear(userSelected)" class="btn btn-success">Crear</button></th>
                             <th></th>
                         </tr>
@@ -42,7 +43,8 @@
                             <th scope="row">{{station.id}}</th>
                             <td>{{station.name}}</td>
                             <td>{{station.description}}</td>
-                            <td>{{station.userId}}</td>
+                    
+                            <td>{{station.type}}</td>
                             <td><button @click="mostrarUpdate(station)"
                                     class="btn btn-primary mb-3">Actualizar</button><br /></td>
                             <td><button @click="mostrarDelete(station)"
@@ -64,15 +66,13 @@
                     <input v-model="stationForm.name" /><br />
                     <label>Descripcion </label><br />
                     <input v-model="stationForm.description" /><br />
-                    <input v-model="stationForm.userId" hidden /><br />
                     <button @click="updateStation(stationForm)" class="btn btn-primary mb-3">Guardar</button><br />
                 </div>
                 <div class="alert alert-danger" v-show="borrar">
                     <input v-model="stationForm.id" hidden />
                     <label>Nombre </label><br />
                     <input v-model="stationForm.name" disabled />
-                    <input v-model="stationForm.description" hidden />
-                    <input v-model="stationForm.userId" hidden /><br /><br />
+                    <input v-model="stationForm.description" disabled />
                     <button @click="deleteStation(stationForm)" class="btn btn-danger mb-3">Borrar</button><br />
                 </div>
                 <div class="alert alert-danger" v-show="mostrar">
@@ -92,8 +92,8 @@ export default {
     data() {
         return {
             stations: [],
-            stationForm: { id: 0, name: "", description: "", userId: 0 },
-            stationPost: { id: 0, name: "", description: "", userId: 0 },
+            stationForm: {  },
+            stationPost: {  },
             station: {},
             users: [],
             user: 0,
@@ -138,7 +138,7 @@ export default {
             try {
                     stationPost.userId = this.userSelected
                     this.stations.push(await stationService.postStation(stationPost))
-                    alert("Station Creado")
+                    alert("Estacion Creada")
                     this.crear = false;
             } catch (e) {
                 this.mensajeError = e;
@@ -156,8 +156,9 @@ export default {
         async updateStation(stationForm) {
             try {
                 console.log("Station Actualizado: " + stationForm);
-                this.station = await stationService.updateStation(stationForm)
-                alert("Station Actualizado")
+                const index = this.stations.findIndex(s => s.id === stationForm.id)
+                this.stations[index] = await stationService.updateStation(stationForm)
+                alert("Estacion Actualizada")
                 this.editar = false;
             } catch (e) {
                 this.mensajeError = e;
@@ -176,7 +177,7 @@ export default {
             try {
                 console.log("Station Borrado: " + stationForm);
                 this.stations.pop(await stationService.deleteStation(stationForm))
-                alert("Station Borrado")
+                alert("Estacion Borrada")
                 this.borrar = false;
             } catch (e) {
                 this.mensajeError = e;

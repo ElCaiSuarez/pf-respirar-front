@@ -11,12 +11,17 @@ router.get('/:id', (req, res) => {
     return stationController.getStationById(req, res);
 });
 
-router.delete('/:id', (req, res) => {
-    return stationController.deleteById(req, res);
+router.delete('/:id', async (req, res) => {
+    return await stationController.deleteById(req, res);
 });
 
 router.post('/', async (req, res) => {
+    console.log("ENTRO EN POST")
     return await stationController.createStation(req, res);
+});
+
+router.patch('/', async (req, res) => {//Cai: Agrego el metodo patch
+    return await stationController.saveStation(req, res);
 });
 
 module.exports = router;
