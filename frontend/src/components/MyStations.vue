@@ -13,9 +13,9 @@
                     </thead>
                     <tbody>
                         <tr v-for="user in users" :key="user.id" v-on:click="getMyStation(user.id)">
-                            <th scope="row">{{user.id}}</th>
-                            <td>{{user.username}}</td>
-                            <td>{{user.email}}</td>
+                            <th scope="row">{{ user.id }}</th>
+                            <td>{{ user.username }}</td>
+                            <td>{{ user.email }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -23,8 +23,17 @@
         </div>
         <br />
         <div v-show="!sleccionarUsuario">
-            <h1>Mis Estaciones: </h1><br />
             <button @click="volver()" class="btn btn-secondary mb-3">Volver</button><br />
+            <h1>Mis Estaciones: </h1><br />
+            <button @click="mostrarCrear(userSelected)" class="btn btn-success">Crear</button>
+            <div class="alert alert-success" v-show="crear">
+                <label>Nombre </label><br />
+                <input v-model="stationPostName" required /><br />
+                <label>Descripcion </label><br />
+                <input v-model="stationPostDescription" required /><br />
+                <span v-if="!isCreateValid">Nombre o Descripcion no válido</span><br />
+                <button @click="createStation(stationPost)" class="btn btn-success mb-3" v-if="isCreateValid" >Guardar</button><br />
+            </div>
             <div class="container">
                 <table class="table table-hover">
                     <thead>
@@ -32,47 +41,38 @@
                             <th scope="col">#</th>
                             <th scope="col">Nombre</th>
                             <th scope="col">Descripcion</th>
-                            
                             <th scope="col">Tipo</th>
-                            <th><button @click="mostrarCrear(userSelected)" class="btn btn-success">Crear</button></th>
+                            <th></th>
                             <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr v-for="station in stations" :key="station.id" v-on:click="">
-                            <th scope="row">{{station.id}}</th>
-                            <td>{{station.name}}</td>
-                            <td>{{station.description}}</td>
-                    
-                            <td>{{station.type}}</td>
+                            <th scope="row">{{ station.id }}</th>
+                            <td>{{ station.name }}</td>
+                            <td>{{ station.description }}</td>
+                            <td>{{ station.type }}</td>
                             <td><button @click="mostrarUpdate(station)"
                                     class="btn btn-primary mb-3">Actualizar</button><br /></td>
-                            <td><button @click="mostrarDelete(station)"
-                                    class="btn btn-danger mb-3">Borrar</button><br /></td>
+                            <td><button @click="mostrarDelete(station)" class="btn btn-danger mb-3">Borrar</button><br />
+                            </td>
                         </tr>
                     </tbody>
                 </table>
-                <div class="alert alert-success" v-show="crear">
-                    <label>Nombre </label><br />
-                    <input v-model="stationPost.name" required /><br />
-                    <label>Descripcion </label><br />
-                    <input v-model="stationPost.description" required /><br />
-                    <input v-model="stationPost.userId" hidden /><br />                  
-                    <button @click="createStation(stationPost)" class="btn btn-success mb-3">Guardar</button><br />
-                </div>
                 <div class="alert alert-primary" v-show="editar">
                     <input v-model="stationForm.id" hidden />
                     <label>Nombre </label><br />
                     <input v-model="stationForm.name" /><br />
                     <label>Descripcion </label><br />
-                    <input v-model="stationForm.description" /><br />
+                    <input v-model="stationForm.description" /><br /><br />
                     <button @click="updateStation(stationForm)" class="btn btn-primary mb-3">Guardar</button><br />
                 </div>
                 <div class="alert alert-danger" v-show="borrar">
                     <input v-model="stationForm.id" hidden />
                     <label>Nombre </label><br />
-                    <input v-model="stationForm.name" disabled />
-                    <input v-model="stationForm.description" disabled />
+                    <input v-model="stationForm.name" disabled /> <br />
+                    <label>Descripcion </label><br />
+                    <input v-model="stationForm.description" disabled /><br /><br />
                     <button @click="deleteStation(stationForm)" class="btn btn-danger mb-3">Borrar</button><br />
                 </div>
                 <div class="alert alert-danger" v-show="mostrar">
@@ -92,8 +92,10 @@ export default {
     data() {
         return {
             stations: [],
-            stationForm: {  },
-            stationPost: {  },
+            stationForm: {},
+            stationPost: {},
+            stationPostName: "",
+            stationPostDescription: "",
             station: {},
             users: [],
             user: 0,
@@ -107,20 +109,20 @@ export default {
             borrar: false
         }
     },
-    mounted:function(){
+    mounted: function () {
         console.log("Busqueda de Usuarios");
         UserService.getUser().then(res => {
             this.users = res
             console.log(this.users);
         });
     },
-    methods:{
+    methods: {
         async mostrarCrear() {
             this.borrar = false;
             this.editar = false;
             this.crear = true;
         },
-        volver(){
+        volver() {
             this.sleccionarUsuario = true
         },
         async getMyStation(userId) {
@@ -136,13 +138,21 @@ export default {
         },
         async createStation(stationPost) {
             try {
-                    stationPost.userId = this.userSelected
-                    this.stations.push(await stationService.postStation(stationPost))
-                    alert("Estacion Creada")
-                    this.crear = false;
+                stationPost.name = this.stationPostName
+                stationPost.description = this.stationPostDescription
+                stationPost.userId = this.userSelected
+                this.stations.push(await stationService.postStation(stationPost))
+                alert("Estacion Creada")
+                this.stationPostName = ""
+                this.stationPostDescription = ""
+                this.crear = false;
+                this.stationPost = {}
             } catch (e) {
                 this.mensajeError = e;
             }
+        },
+        validateCreate() {
+            return this.stationPostName.length > 3 && this.stationPostDescription.length > 3
         },
         async mostrarUpdate(station) {
             this.crear = false;
@@ -182,6 +192,11 @@ export default {
             } catch (e) {
                 this.mensajeError = e;
             }
+        }
+    },
+    computed: {
+        isCreateValid() {
+            return this.validateCreate();
         }
     }
 }
