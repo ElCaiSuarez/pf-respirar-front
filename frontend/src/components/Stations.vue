@@ -3,28 +3,32 @@
         <div>
             <h1>Estaciones: </h1><br />
             <div class="container">
+
                 <table class="table table-hover">
                     <thead>
                         <tr>
-                            <th scope="col">#</th>
-                            <th scope="col">Nombre</th>
-                            <th scope="col">Descripcion</th>
-                            <th scope="col">Usuario</th>
-                            <th scope="col">Tipo</th>
+                            <th scope="col"></th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="station in stations" :key="station.id" v-on:click="">
-                            <th scope="row">{{station.id}}</th>
-                            <td>{{station.name}}</td>
-                            <td>{{station.description}}</td>
-                            <td>{{station.userId}}</td>
-                            <td>{{station.type}}</td>
+                        <tr v-for="station in stations" :key="station.id" v-on:click="mostrarAlerta">
+                            <div class="card">
+                                <div class="card-header">
+                                    {{ station.id }}  | Tipo: {{ station.type }}
+                                </div>
+                                <div class="card-body">
+                                    <h6 class="card-title">{{ station.name }}</h6>
+                                    <p class="card-text">{{ station.description }} | Usuario: {{ station.userId }}</p>
+                                </div>
+                            </div>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <br />
+        </div>
+        <div v-show="mostrarError">
+            <label class="alert alert-danger">{{ mensajeError }}</label>
         </div>
     </div>
 </template>
@@ -36,16 +40,24 @@ export default {
     data() {
         return {
             stations: [],
+            mostrarError: false,
+            mensajeError: ""
+
         }
     },
-    mounted:function(){
-        console.log("Busqueda de Stations");
+    mounted: function () {
         stationService.getStation().then(res => {
             this.stations = res
-            console.log(this.stations);
-        });
-        
-        
+        })
+        .catch(error => {
+                this.mensajeError = error;
+                this.mostrarError = true
+            })
+    },
+    methods: {
+        async mostrarAlerta() {
+            alert("Mostrar Estacion en Mapa (Geo ToDo)")
+        }
     }
 }
 </script>

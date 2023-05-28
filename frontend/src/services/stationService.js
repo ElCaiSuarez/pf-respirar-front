@@ -5,7 +5,7 @@ export default {
         try {
             console.log("Llamo a getStation");
             const res = await apiService.apiClient.get('/station');
-            console.log(res.data);
+            //console.log(res.data);
             return res.data
         } catch (e) {
             throw e
@@ -15,7 +15,7 @@ export default {
         try {
             console.log("Llamo a getStation con Query");
             const res = await apiService.apiClient.get('/station', { params: { userId: userId }});
-            console.log(res.data);
+            //console.log(res.data);
             return res.data
         } catch (e) {
             throw e
@@ -24,31 +24,31 @@ export default {
     async postStation(station) {
         try {
             const res = await apiService.apiClient.post('/station', station);
-            console.log("El backend devolvio el siguiente mensaje: " + res.data);
+            //console.log("El backend devolvio el siguiente mensaje: " + res.data);
             return res.data
 
         } catch (e) {
-            throw "Error de conexion"
+            throw e
         }
     },
     async deleteStation(station) {
         const query = "/station/" + station.id
         try {
             let saved = await apiService.apiClient.delete(query);
-            console.log("El backend devolvio el siguiente mensaje: " + saved.data);
+            //console.log("El backend devolvio el siguiente mensaje: " + saved.data);
             return saved.data;
 
         } catch (e) {
-            throw "Error de conexion"
+            throw e
         }
     },
     async updateStation(station) {
         try {
             let saved = await apiService.apiClient.patch('/station', station);
-            console.log("El backend devolvio el siguiente mensaje: " + saved.data);
+            //console.log("El backend devolvio el siguiente mensaje: " + saved.data);
             return saved.data;
         } catch (e) {
-            throw "Error de conexion"
+            throw e
         }
     }
 

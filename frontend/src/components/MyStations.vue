@@ -1,7 +1,7 @@
 <template>
     <div>
         <div v-show="sleccionarUsuario">
-            <h1>Seleccione un Usuario: </h1><br />
+            <h2>Seleccione un Usuario (Login ToDo): </h2><br />
             <div class="container">
                 <table class="table table-hover">
                     <thead>
@@ -24,7 +24,7 @@
         <br />
         <div v-show="!sleccionarUsuario">
             <button @click="volver()" class="btn btn-secondary mb-3">Volver</button><br />
-            <h1>Mis Estaciones: </h1><br />
+            <h2>Mis Estaciones: </h2><br />
             <button @click="mostrarCrear(userSelected)" class="btn btn-success">Crear</button>
             <div class="alert alert-success" v-show="crear">
                 <label>Nombre </label><br />
@@ -32,7 +32,8 @@
                 <label>Descripcion </label><br />
                 <input v-model="stationPostDescription" required /><br />
                 <span v-if="!isCreateValid">Nombre o Descripcion no válido</span><br />
-                <button @click="createStation(stationPost)" class="btn btn-success mb-3" v-if="isCreateValid" >Guardar</button><br />
+                <button @click="createStation(stationPost)" class="btn btn-success mb-3"
+                    v-if="isCreateValid">Guardar</button><br />
             </div>
             <div class="container">
                 <table class="table table-hover">
@@ -60,7 +61,7 @@
                     </tbody>
                 </table>
                 <div class="alert alert-primary" v-show="editar">
-                    <input v-model="stationForm.id" hidden />
+                    <input v-model="stationForm.id" hidden/>
                     <label>Nombre </label><br />
                     <input v-model="stationForm.name" /><br />
                     <label>Descripcion </label><br />
@@ -75,18 +76,20 @@
                     <input v-model="stationForm.description" disabled /><br /><br />
                     <button @click="deleteStation(stationForm)" class="btn btn-danger mb-3">Borrar</button><br />
                 </div>
-                <div class="alert alert-danger" v-show="mostrar">
-                    {{ mensajeError }}
-                </div>
             </div>
-            <br />
+        </div>
+        <div v-show="mostrarError">
+            <label class="alert alert-danger">{{ mensajeError }}</label>
+        </div>
+        <div v-show="mostrarOk">
+            <label class="alert alert-secondary">{{ mensajeOk }}</label>
         </div>
     </div>
 </template>
 
 <script>
 import stationService from '../services/stationService';
-import UserService from '../services/userService';
+import userService from '../services/userService';
 
 export default {
     data() {
@@ -102,38 +105,43 @@ export default {
             userSelected: 0,
             userPost: {},
             mensajeError: "",
+            mensajeOk: "",
             sleccionarUsuario: true,
-            mostrar: false,
+            mostrarError: false,
+            mostrarOk: false,
             crear: false,
             editar: false,
             borrar: false
         }
     },
     mounted: function () {
-        console.log("Busqueda de Usuarios");
-        UserService.getUser().then(res => {
-            this.users = res
-            console.log(this.users);
-        });
+            userService.getUser().then(res => {
+                this.users = res
+            })
+            .catch(error => {
+                this.mensajeError = error;
+                this.mostrarError = true
+            })
     },
     methods: {
         async mostrarCrear() {
             this.borrar = false;
             this.editar = false;
-            this.crear = true;
+            this.crear = !this.crear
+            this.mostrarOk = false
+            this.mostrarError = false
         },
         volver() {
             this.sleccionarUsuario = true
         },
         async getMyStation(userId) {
             try {
-                console.log("Busqueda de Estaciones por Usuario");
                 this.userSelected = userId
                 this.stations = await stationService.getMyStation(userId)
-                console.log(this.stations);
                 this.sleccionarUsuario = false
             } catch (e) {
                 this.mensajeError = e;
+                this.mostrarError = true
             }
         },
         async createStation(stationPost) {
@@ -142,13 +150,15 @@ export default {
                 stationPost.description = this.stationPostDescription
                 stationPost.userId = this.userSelected
                 this.stations.push(await stationService.postStation(stationPost))
-                alert("Estacion Creada")
                 this.stationPostName = ""
                 this.stationPostDescription = ""
                 this.crear = false;
                 this.stationPost = {}
+                this.mensajeOk = "Estacion Creada";
+                this.mostrarOk = true
             } catch (e) {
                 this.mensajeError = e;
+                this.mostrarError = true
             }
         },
         validateCreate() {
@@ -157,7 +167,9 @@ export default {
         async mostrarUpdate(station) {
             this.crear = false;
             this.borrar = false;
-            this.editar = true;
+            this.editar = !this.editar;
+            this.mostrarOk = false
+            this.mostrarError = false
             this.stationForm.id = station.id;
             this.stationForm.name = station.name;
             this.stationForm.description = station.description;
@@ -168,16 +180,20 @@ export default {
                 console.log("Station Actualizado: " + stationForm);
                 const index = this.stations.findIndex(s => s.id === stationForm.id)
                 this.stations[index] = await stationService.updateStation(stationForm)
-                alert("Estacion Actualizada")
                 this.editar = false;
+                this.mensajeOk = "Estacion Actualizada";
+                this.mostrarOk = true
             } catch (e) {
                 this.mensajeError = e;
+                this.mostrarError = true
             }
         },
         async mostrarDelete(station) {
-            this.crear = false;
-            this.editar = false;
-            this.borrar = true;
+            this.crear = false
+            this.editar = false
+            this.borrar = !this.borrar
+            this.mostrarOk = false
+            this.mostrarError = false
             this.stationForm.id = station.id;
             this.stationForm.name = station.name;
             this.stationForm.description = station.description;
@@ -187,10 +203,12 @@ export default {
             try {
                 console.log("Station Borrado: " + stationForm);
                 this.stations.pop(await stationService.deleteStation(stationForm))
-                alert("Estacion Borrada")
                 this.borrar = false;
+                this.mensajeOk = "Estacion Borrada";
+                this.mostrarOk = true
             } catch (e) {
                 this.mensajeError = e;
+                this.mostrarError = true
             }
         }
     },

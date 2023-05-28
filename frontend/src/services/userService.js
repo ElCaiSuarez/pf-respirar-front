@@ -5,7 +5,7 @@ export default {
         try {
             console.log("Llamo a getUser");
             const res = await apiService.apiClient.get('/user');
-            console.log(res.data);
+            //console.log(res.data);
             return res.data
         } catch (e) {
             throw e

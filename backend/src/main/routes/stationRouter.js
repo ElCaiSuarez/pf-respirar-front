@@ -16,7 +16,6 @@ router.delete('/:id', async (req, res) => {
 });
 
 router.post('/', async (req, res) => {
-    console.log("ENTRO EN POST")
     return await stationController.createStation(req, res);
 });
 
