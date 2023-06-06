@@ -1,7 +1,8 @@
 const knex = require("../knex");
 const tableName = 'user';
 const Users = new Map();
-Users.set(1, {id: 1, username: "juancarlos", email: "juancarlos@gmail.com"})
+Users.set(1, {id: 1, username: "admin", email: "admin@gmail.com", type: "ADMIN"})//Cai: Modifico usuario por defecto con rol ADMIN
+Users.set(2, {id: 2, username: "user", email: "user@gmail.com", type: "USER"})//Cai: Agrego 2do usuario por defecto con rol USER
 
 const save = async (data) => {
     try {

@@ -32,7 +32,7 @@
             <div class="card-body">
                 <h5 class="card-title">Administrar Solicitudes </h5>
                 <p class="card-text">Solicitar la registracion de nuevas Estaciones Externas</p>
-                <a href="/" class="btn btn-secondary">ToDo</a>
+                <a href="/myapplications" class="btn btn-primary">Mis Solicitudes</a>
             </div>
         </div>
     </div>

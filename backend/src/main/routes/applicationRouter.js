@@ -27,4 +27,8 @@ router.post('/', async (req, res) => {
     return await applicationController.createApplication(req, res);
 });
 
+router.patch('/', async (req, res) => {//Cai: Agrego el metodo patch
+    return await applicationController.saveApplication(req, res);
+});
+
 module.exports = router;

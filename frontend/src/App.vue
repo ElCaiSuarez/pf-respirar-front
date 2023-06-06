@@ -29,7 +29,7 @@ export default {
               <li class="nav-item"><RouterLink class="nav-link" to="/about">Sobre Nosotros</RouterLink></li>
               <li class="nav-item"><RouterLink class="nav-link" to="/station">Estaciones</RouterLink></li>
               <li class="nav-item"><RouterLink class="nav-link" to="/mystations">Mis Estaciones</RouterLink></li>
-              <li class="nav-item"><RouterLink class="nav-link" to="/">Mis Solicitudes</RouterLink></li>
+              <li class="nav-item"><RouterLink class="nav-link" to="/myapplications">Mis Solicitudes</RouterLink></li>
             </ul>
           </div>
         </div>
