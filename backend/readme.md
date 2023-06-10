@@ -1,215 +1,63 @@
-# Meetup API
+# RespirAR API
 
- Is an API that allows organizations to create meetups.
-
-
-## Installation
-
-Install [NodeJs](https://nodejs.org/en/download/)
-
-The package manager needed, npm, is installed with NodeJs.
-
-## Check NodeJS and npm version
-
-The NodeJS version need is 10.19.0 or superior.
-
-The npm version need is 6.14.4 or superior.
-
-```bash
-node -v
-```
-```bash
-npm -v
-```
-
-## Download dependencies
-
-```bash
-npm install
-```
-
-## Database
-
-Use mongoDB to create a database for this API, in src/index.js you can modify the port and schema name (default schema name: meetup and port: 27017).
-
-## Run
-
-To run the api execute the command 
-```bash
-npm run-script run
-```
+Esta API se utiliza para crear, modificar y eliminar estaciones LoraWan, asi como crear, modificar y eliminar estaciones Wifi
 
 ## Endpoints
 
-POST /user/create
+POST /station
 
-```bash
-curl --location --request POST 'http://localhost:3000/user/create' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "name": "Juan",
-    "role": "admin"
-}'
-```
-Response
-
-```bash
-{
-    "user": {
-        "meetups": [],
-        "_id": "5f20a4e43edbde8d6a820f5f",
-        "name": "Juan",
-        "role": "admin",
-        "__v": 0
-    }
+Json:{
+"station": {
+"name": "LoraWan1"
+"description": "Estacion propia LoraWan1"
 }
-```
+}
 
-POST /meetup/create
+Response
+"Status 200"
 
-Comment: Date has to be in the format YYYY-MM-DD and cannot be schedule after 5 days from current day because of limitations in the weather forecast API (https://openweathermap.org/api).
+GET /station
 
-```bash
-curl --location --request POST 'http://localhost:3000/meetup/create' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "date": "2020-07-30",
-    "description": "Meetup test",
-    "user_id": "5f20a4e43edbde8d6a820f5f"
-}'
-```
+Json:{
+Toda la lista de estaciones
+}
 
 Response
 
-```bash
+agregar respuesta en json
 {
-    "meetup": {
-        "users": [],
-        "_id": "5f20a5bc986b4d8ed9fec585",
-        "date": "2020-07-30",
-        "description": "Meetup test",
-        "__v": 0
-    }
+"meetup": {
+"users": [],
+"\_id": "5f20a5bc986b4d8ed9fec585",
+"date": "2020-07-30",
+"description": "Meetup test",
+"\_\_v": 0
 }
+}
+
 ```
 
-PUT /meetup/checkin
+GET /station/:id
 
-```bash
-curl --location --request PUT 'http://localhost:3000/meetup/checkin' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "user_id": "5f20a4e43edbde8d6a820f5f",
-    "meetup_id": "5f20a5bc986b4d8ed9fec585"
-} '
-```
+json
 
 Response example:
-```bash
-{
-    "user": {
-        "meetups": [
-            {
-                "users": [],
-                "_id": "5f20a5bc986b4d8ed9fec585",
-                "date": "2020-07-30",
-                "description": "Meetup test",
-                "__v": 0
-            }
-        ],
-        "_id": "5f20a702986b4d8ed9fec586",
-        "name": "Pepe",
-        "role": "user",
-        "__v": 1
-    }
-}
-```
-PUT /meetup/join
 
-```bash
-curl --location --request PUT 'http://localhost:3000/meetup/join' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "user_id": "5f20a702986b4d8ed9fec586",
-    "meetup_id": "5f20a5bc986b4d8ed9fec585"
-} '
-```
+json
 
-Response
-```bash
-{
-    "meetup": {
-        "users": [
-            {
-                "meetups": [
-                    "5f20a5bc986b4d8ed9fec585"
-                ],
-                "_id": "5f20a702986b4d8ed9fec586",
-                "name": "Pepe",
-                "role": "user",
-                "__v": 1
-            }
-        ],
-        "_id": "5f20a5bc986b4d8ed9fec585",
-        "date": "2020-07-30",
-        "description": "Meetup test",
-        "__v": 1
-    }
-}
-```
+DELETE /station/:id
 
-GET /meetup/list
+json
 
-```bash
-curl --location --request GET 'http://localhost:3000/meetup/list'
-```
+Response example:
 
-Response
-```bash
-[
-    {
-        "users": [
-            "5f20a702986b4d8ed9fec586"
-        ],
-        "_id": "5f20a5bc986b4d8ed9fec585",
-        "date": "2020-07-30",
-        "description": "Meetup test",
-        "__v": 1
-    }
-]
-```
+json
 
-GET /birras
+PATCH /station
 
-```bash
-curl --location --request GET 'http://localhost:3000/birras/' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "meetup_id": "5f20a5bc986b4d8ed9fec585",
-    "user_id": "5f20a4e43edbde8d6a820f5f"
-}'
-```
+json
 
-Response
-```bash
-{
-    "beersToBuy": 6
-}
-```
+Response example:
 
-GET /meetup/weather
-
-```bash
-curl --location --request GET 'http://localhost:3000/meetup/weather' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "meetup_id": "5f20a5bc986b4d8ed9fec585",
-    "user_id": "5f20a4e43edbde8d6a820f5f"
-}'
-```
-Response
-```bash
-{
-    "temperatureOfMeetupDay": 7.79
-}
+json
 ```
