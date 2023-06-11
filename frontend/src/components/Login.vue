@@ -41,21 +41,19 @@ export default {
   methods: {
     login() {
       const store = useStore();
-
       if (
         this.username === store.adminMockAccount.username &&
         this.password === store.adminMockAccount.password
       ) {
-        // Login successful, redirect to admin dashboard
+        store.setUserRole("admin");
         this.$router.push("home");
       } else if (
         this.username === store.userMockAccount.username &&
         this.password === store.userMockAccount.password
       ) {
-        // Login successful, redirect to user dashboard
+        store.setUserRole("user");
         this.$router.push("home");
       } else {
-        // Invalid credentials, show error message
         alert("Invalid username or password");
       }
     },

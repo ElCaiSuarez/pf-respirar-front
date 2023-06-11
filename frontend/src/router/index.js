@@ -6,6 +6,8 @@ import MyApplicationsView from '../views/MyApplicationsView.vue'
 import NotFoundView from '../views/NotFoundView.vue'
 import LoginView from '../views/LoginView.vue'
 import AboutView from '../views/AboutView.vue'
+import CreateStationAdminView from '../views/CreateStationAdminView.vue'
+import CreateStationUserView from '../views/CreateStationUserView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -50,6 +52,16 @@ const router = createRouter({
       path: "/login",
       name: "login",
       component: LoginView
+    },
+    {
+      path: "/createStationAdmin",
+      name: "createStationAdmin",
+      component: CreateStationAdminView
+    },
+    {
+      path: "/createStationUser",
+      name: "createStationUser",
+      component: CreateStationUserView
     }
   ]
 })

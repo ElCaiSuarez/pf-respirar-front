@@ -1,12 +1,14 @@
 <template>
   <div>
     <div>
-      <h1 style="margin-top: 10px">Estaciones</h1>
       <div class="container">
         <table class="table table-hover">
           <thead>
             <tr>
-              <th scope="col"></th>
+              <th>Id</th>
+              <th>Name</th>
+              <th>Type</th>
+              <th>Description</th>
             </tr>
           </thead>
           <tbody>
@@ -15,18 +17,10 @@
               :key="station.id"
               v-on:click="mostrarAlerta"
             >
-              <div class="card" style="margin-bottom: 20px">
-                <div class="card-header">
-                  {{ station.id }} | {{ station.name }}
-                </div>
-                <div class="card-body">
-                  <p class="card-title">Tipo: {{ station.type }}</p>
-                  <p class="card-text">
-                    Descripcion: {{ station.description }}
-                  </p>
-                  <p class="card-text">Usuario: {{ station.userId }}</p>
-                </div>
-              </div>
+              <td>{{ station.id }}</td>
+              <td>{{ station.name }}</td>
+              <td>{{ station.type }}</td>
+              <td>{{ station.description }}</td>
             </tr>
           </tbody>
         </table>

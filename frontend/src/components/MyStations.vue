@@ -1,54 +1,7 @@
 <template>
   <div>
-    <div v-show="sleccionarUsuario">
-      <h2>Seleccione un Usuario (Login Team):</h2>
-      <br />
-      <div class="container">
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Nombre</th>
-              <th scope="col">Correo</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr
-              v-for="user in users"
-              :key="user.id"
-              v-on:click="getMyStation(user.id)"
-            >
-              <th scope="row">{{ user.id }}</th>
-              <td>{{ user.username }}</td>
-              <td>{{ user.email }}</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
-    <br />
-    <div v-show="!sleccionarUsuario">
-      <button @click="volver()" class="btn btn-secondary mb-3">Volver</button
-      ><br />
-      <h2>Mis Estaciones:</h2>
-      <br />
-      <button @click="mostrarCrear(userSelected)" class="btn btn-success">
-        Crear
-      </button>
-      <div class="alert alert-success" v-show="crear">
-        <label>Nombre </label><br />
-        <input v-model="stationPostName" required /><br />
-        <label>Descripcion </label><br />
-        <input v-model="stationPostDescription" required /><br />
-        <span v-if="!isCreateValid">Nombre o Descripcion no válido</span><br />
-        <button
-          @click="createStation(stationPost)"
-          class="btn btn-success mb-3"
-          v-if="isCreateValid"
-        >
-          Guardar</button
-        ><br />
-      </div>
+    <div>
+      <h2 style="margin: 10px">Mis Estaciones</h2>
       <div class="container">
         <table class="table table-hover">
           <thead>
@@ -62,7 +15,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="station in stations" :key="station.id" v-on:click="">
+            <tr v-for="station in stations" :key="station.id">
               <th scope="row">{{ station.id }}</th>
               <td>{{ station.name }}</td>
               <td>{{ station.description }}</td>
@@ -113,6 +66,9 @@
           ><br />
         </div>
       </div>
+      <div>
+        <button @click="volver()" class="btn btn-secondary mb-3">Volver</button>
+      </div>
     </div>
     <div v-show="mostrarError">
       <label class="alert alert-danger">{{ mensajeError }}</label>
@@ -125,8 +81,6 @@
 
 <script>
 import stationService from "../services/stationService";
-import userService from "../services/userService";
-
 export default {
   data() {
     return {
@@ -136,13 +90,10 @@ export default {
       stationPostName: "",
       stationPostDescription: "",
       station: {},
-      users: [],
-      user: 0,
-      userSelected: 0,
+      userId: 0,
       userPost: {},
       mensajeError: "",
       mensajeOk: "",
-      sleccionarUsuario: true,
       mostrarError: false,
       mostrarOk: false,
       crear: false,
@@ -150,60 +101,19 @@ export default {
       borrar: false,
     };
   },
-  mounted: function () {
-    userService
-      .getUser()
-      .then((res) => {
-        this.users = res;
-      })
-      .catch((error) => {
-        this.mensajeError = error;
-        this.mostrarError = true;
-      });
-  },
   methods: {
-    async mostrarCrear() {
-      this.borrar = false;
-      this.editar = false;
-      this.crear = !this.crear;
-      this.mostrarOk = false;
-      this.mostrarError = false;
+    setUserId() {
+      const store = useStore();
+      if (store.userRole === "admin") {
+        this.userId = 1;
+      } else {
+        this.userId = 2;
+      }
     },
     volver() {
-      this.sleccionarUsuario = true;
-    },
-    async getMyStation(userId) {
-      try {
-        this.userSelected = userId;
-        this.stations = await stationService.getMyStation(userId);
-        this.sleccionarUsuario = false;
-      } catch (e) {
-        this.mensajeError = e;
-        this.mostrarError = true;
-      }
-    },
-    async createStation(stationPost) {
-      try {
-        stationPost.name = this.stationPostName;
-        stationPost.description = this.stationPostDescription;
-        stationPost.userId = this.userSelected;
-        this.stations.push(await stationService.postStation(stationPost));
-        this.stationPostName = "";
-        this.stationPostDescription = "";
-        this.crear = false;
-        this.stationPost = {};
-        this.mensajeOk = "Estacion Creada";
-        this.mostrarOk = true;
-      } catch (e) {
-        this.mensajeError = e;
-        this.mostrarError = true;
-      }
-    },
-    validateCreate() {
-      return (
-        this.stationPostName.length > 3 &&
-        this.stationPostDescription.length > 3
-      );
+      this.$router.push({
+        path: "home",
+      });
     },
     async mostrarUpdate(station) {
       this.crear = false;
@@ -218,7 +128,7 @@ export default {
     },
     async updateStation(stationForm) {
       try {
-        console.log("Station Actualizado: " + stationForm);
+        console.log("Station Actualizada");
         const index = this.stations.findIndex((s) => s.id === stationForm.id);
         this.stations[index] = await stationService.updateStation(stationForm);
         this.editar = false;
@@ -242,7 +152,7 @@ export default {
     },
     async deleteStation(stationForm) {
       try {
-        console.log("Station Borrado: " + stationForm);
+        console.log("Station Borrada");
         this.stations.pop(await stationService.deleteStation(stationForm));
         this.borrar = false;
         this.mensajeOk = "Estacion Borrada";
@@ -253,10 +163,16 @@ export default {
       }
     },
   },
-  computed: {
-    isCreateValid() {
-      return this.validateCreate();
-    },
+  mounted: function () {
+    stationService
+      .getMyStation(this.userId)
+      .then((res) => {
+        this.stations = res;
+      })
+      .catch((error) => {
+        this.mensajeError = error;
+        this.mostrarError = true;
+      });
   },
 };
 </script>
