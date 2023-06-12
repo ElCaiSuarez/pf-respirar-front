@@ -1,5 +1,6 @@
 var Application = require('../models/application');
 var Station = require('../models/station');
+var Fiware = require('../services/fiware');
 
 async function createApplication(req,res) {
     var application = req.body; 
@@ -52,12 +53,14 @@ async function acceptApplicationById(req, res) {
     var station = {
         name: application.name,
         description: application.description,
+        serial: application.serial,
         type: "EXTERNAL",
         userId: application.userId,
         deleted: false,
     }
     await Application.save(application);
     await Station.create(station);
+    await Fiware.createStation(station)
     res.status(200).send(application);
 }
 

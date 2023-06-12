@@ -1,9 +1,11 @@
 var Station = require('../models/station');
+var Fiware = require('../services/fiware');
 
 async function createStation(req,res) {
     var station = req.body; 
     station.type = "RESPIRAR";
     await Station.create(station);
+    await Fiware.createStation(station)
     res.status(200).send(station);
 }
 
@@ -11,6 +13,7 @@ async function saveStation(req,res) {
     var stations = await Station.getById(parseInt(req.body.id)); //Cai: Busco la estacion por id
     stations.name = req.body.name; //Cai: Reemplazo el name modificado
     stations.description = req.body.description //Cai: Reemplazo la description modificada
+    
     await Station.save(stations);
     res.status(200).send(stations);
 }
