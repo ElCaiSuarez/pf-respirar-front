@@ -31,6 +31,8 @@
                 <input v-model="stationPostName" required /><br />
                 <label>Descripcion </label><br />
                 <input v-model="stationPostDescription" required /><br />
+                <label>Numero de Serie </label><br />
+                <input v-model="stationPostSerial" required /><br />
                 <span v-if="!isCreateValid">Nombre o Descripcion no válido</span><br />
                 <button @click="createStation(stationPost)" class="btn btn-success mb-3"
                     v-if="isCreateValid">Guardar</button><br />
@@ -42,6 +44,7 @@
                             <th scope="col">#</th>
                             <th scope="col">Nombre</th>
                             <th scope="col">Descripcion</th>
+                            <th scope="col">Numero de Serie</th>
                             <th scope="col">Tipo</th>
                             <th></th>
                             <th></th>
@@ -52,6 +55,7 @@
                             <th scope="row">{{ station.id }}</th>
                             <td>{{ station.name }}</td>
                             <td>{{ station.description }}</td>
+                            <td>{{ station.serial }}</td>
                             <td>{{ station.type }}</td>
                             <td><button @click="mostrarUpdate(station)"
                                     class="btn btn-primary mb-3">Actualizar</button><br /></td>
@@ -65,7 +69,9 @@
                     <label>Nombre </label><br />
                     <input v-model="stationForm.name" /><br />
                     <label>Descripcion </label><br />
-                    <input v-model="stationForm.description" /><br /><br />
+                    <input v-model="stationForm.description" /><br />
+                    <label>Numero de Serie </label><br />
+                    <input v-model="stationForm.serial" /><br /><br />
                     <button @click="updateStation(stationForm)" class="btn btn-primary mb-3">Guardar</button><br />
                 </div>
                 <div class="alert alert-danger" v-show="borrar">
@@ -74,6 +80,8 @@
                     <input v-model="stationForm.name" disabled /> <br />
                     <label>Descripcion </label><br />
                     <input v-model="stationForm.description" disabled /><br /><br />
+                    <label>Numero de Serie </label><br />
+                    <input v-model="stationForm.serial" disabled /><br /><br />
                     <button @click="deleteStation(stationForm)" class="btn btn-danger mb-3">Borrar</button><br />
                 </div>
             </div>
@@ -99,6 +107,7 @@ export default {
             stationPost: {},
             stationPostName: "",
             stationPostDescription: "",
+            stationPostSerial: "",
             station: {},
             users: [],
             user: 0,
@@ -148,10 +157,12 @@ export default {
             try {
                 stationPost.name = this.stationPostName
                 stationPost.description = this.stationPostDescription
+                stationPost.serial = this.stationPostSerial
                 stationPost.userId = this.userSelected
                 this.stations.push(await stationService.postStation(stationPost))
                 this.stationPostName = ""
                 this.stationPostDescription = ""
+                this.stationPostSerial = ""
                 this.crear = false;
                 this.stationPost = {}
                 this.mensajeOk = "Estacion Creada";
@@ -173,6 +184,7 @@ export default {
             this.stationForm.id = station.id;
             this.stationForm.name = station.name;
             this.stationForm.description = station.description;
+            this.stationForm.serial = station.serial;
             this.stationForm.userId = station.userId;
         },
         async updateStation(stationForm) {
@@ -197,6 +209,7 @@ export default {
             this.stationForm.id = station.id;
             this.stationForm.name = station.name;
             this.stationForm.description = station.description;
+            this.stationForm.serial = station.serial;
             this.stationForm.userId = station.userId;
         },
         async deleteStation(stationForm) {

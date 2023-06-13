@@ -12,6 +12,7 @@ async function saveApplication(req,res) {//Cai: Agrego metodo para Patch
     var application = await Application.getById(parseInt(req.body.id)); //Cai: Busco la estacion por id
     application.name = req.body.name; //Cai: Reemplazo el name modificado
     application.description = req.body.description //Cai: Reemplazo la description modificada
+    application.serial = req.body.serial //Cai: Reemplazo el serial modificado
     await Application.save(application);
     res.status(200).send(application);
 }

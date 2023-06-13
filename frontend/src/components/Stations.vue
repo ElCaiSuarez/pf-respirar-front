@@ -14,11 +14,11 @@
                         <tr v-for="station in stations" :key="station.id" v-on:click="mostrarAlerta">
                             <div class="card">
                                 <div class="card-header">
-                                    {{ station.id }}  | Tipo: {{ station.type }}
+                                    <h5>{{ station.id }}  | <b>{{ station.name }}</b></h5>
                                 </div>
                                 <div class="card-body">
-                                    <h6 class="card-title">{{ station.name }}</h6>
-                                    <p class="card-text">{{ station.description }} | Usuario: {{ station.userId }}</p>
+                                    <h5 class="card-title">Tipo: {{ station.type }}</h5>
+                                    <p class="card-text"><b>Descripcion: </b>{{ station.description }} | <b>Numero de Serie: </b>{{ station.serial }} | <b>Usuario: </b>{{ station.userId }}</p>
                                 </div>
                             </div>
                         </tr>

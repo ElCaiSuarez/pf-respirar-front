@@ -13,7 +13,7 @@ async function saveStation(req,res) {
     var stations = await Station.getById(parseInt(req.body.id)); //Cai: Busco la estacion por id
     stations.name = req.body.name; //Cai: Reemplazo el name modificado
     stations.description = req.body.description //Cai: Reemplazo la description modificada
-    
+    stations.serial = req.body.serial //Cai: Reemplazo el serial modificado
     await Station.save(stations);
     res.status(200).send(stations);
 }

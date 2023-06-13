@@ -34,7 +34,9 @@
                     <input v-model="applicationPostName" required /><br />
                     <label>Descripcion </label><br />
                     <input v-model="applicationPostDescription" required /><br />
-                    <span v-if="!isCreateValid">Nombre o Descripcion no válido</span><br />
+                    <label>Numero de Serie </label><br />
+                    <input v-model="applicationPostSerial" required /><br />
+                    <span v-if="!isCreateValid">Nombre/Descripcion/Serial no válido</span><br />
                     <button @click="createApplication(applicationPost)" class="btn btn-success mb-3"
                         v-if="isCreateValid">Guardar</button><br />
                 </div>
@@ -45,6 +47,7 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Descripcion</th>
+                                <th scope="col">Numero de Serie</th>
                                 <th scope="col">Estado</th>
                                 <th></th>
                                 <th></th>
@@ -55,6 +58,7 @@
                                 <th scope="row">{{ application.id }}</th>
                                 <td>{{ application.name }}</td>
                                 <td>{{ application.description }}</td>
+                                <td>{{ application.serial }}</td>
                                 <td>{{ application.status }}</td>
                                 <td><button @click="mostrarUpdate(application)"
                                         class="btn btn-primary mb-3">Actualizar</button><br /></td>
@@ -69,7 +73,9 @@
                         <label>Nombre </label><br />
                         <input v-model="applicationForm.name" /><br />
                         <label>Descripcion </label><br />
-                        <input v-model="applicationForm.description" /><br /><br />
+                        <input v-model="applicationForm.description" /><br />
+                        <label>Numero de Serie </label><br />
+                        <input v-model="applicationForm.serial" /><br /><br />
                         <button @click="updateApplication(applicationForm)" class="btn btn-primary mb-3">Guardar</button><br />
                     </div>
                     <div class="alert alert-danger" v-show="borrar">
@@ -77,7 +83,9 @@
                         <label>Nombre </label><br />
                         <input v-model="applicationForm.name" disabled /> <br />
                         <label>Descripcion </label><br />
-                        <input v-model="applicationForm.description" disabled /><br /><br />
+                        <input v-model="applicationForm.description" disabled /><br />
+                        <label>Numero de Serie </label><br />
+                        <input v-model="applicationForm.serial" disabled /><br /><br />
                         <button @click="deleteApplication(applicationForm)" class="btn btn-danger mb-3">Borrar</button><br />
                     </div>
                 </div>
@@ -92,6 +100,7 @@
                                 <th scope="col">#</th>
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Descripcion</th>
+                                <th scope="col">Numero de Serie</th>
                                 <th scope="col">Usuario</th>
                                 <th scope="col">Estado</th>
                                 <th></th>
@@ -103,6 +112,7 @@
                                 <th scope="row">{{ application.id }}</th>
                                 <td>{{ application.name }}</td>
                                 <td>{{ application.description }}</td>
+                                <td>{{ application.serial }}</td>
                                 <td>{{ application.userId }}</td>
                                 <td>{{ application.status }}</td>
                                 <td><button @click="mostrarAccept(application)"
@@ -119,6 +129,8 @@
                         <input v-model="applicationForm.name" disabled/><br />
                         <label>Descripcion </label><br />
                         <input v-model="applicationForm.description" disabled/><br />
+                        <label>Numero de Serie </label><br />
+                        <input v-model="applicationForm.serial" disabled/><br />
                         <label>Usuario </label><br />
                         <input v-model="applicationForm.userId" disabled/><br />
                         <label>Estado </label><br />
@@ -131,6 +143,8 @@
                         <input v-model="applicationForm.name" disabled /> <br />
                         <label>Descripcion </label><br />
                         <input v-model="applicationForm.description" disabled /><br />
+                        <label>Numero de Serie </label><br />
+                        <input v-model="applicationForm.serial" disabled /><br />
                         <label>Usuario </label><br />
                         <input v-model="applicationForm.userId" disabled/><br />
                         <label>Estado </label><br />
@@ -161,6 +175,7 @@ export default {
             applicationPost: {},
             applicationPostName: "",
             applicationPostDescription: "",
+            applicationPostSerial: "",
             application: {},
             users: [],
             user: 0,
@@ -225,10 +240,12 @@ export default {
             try {
                 application.name = this.applicationPostName
                 application.description = this.applicationPostDescription
+                application.serial = this.applicationPostSerial
                 application.userId = this.userSelected
                 this.applications.push(await applicationService.postApplication(application))
                 this.applicationPostName = ""
                 this.applicationPostDescription = ""
+                this.applicationPostSerial = ""
                 this.crear = false;
                 this.applicationPost = {}
                 this.mensajeOk = "Solicitud Creada";
@@ -250,6 +267,7 @@ export default {
             this.applicationForm.id = application.id;
             this.applicationForm.name = application.name;
             this.applicationForm.description = application.description;
+            this.applicationForm.serial = application.serial;
             this.applicationForm.userId = application.userId;
         },
         async updateApplication(applicationForm) {
@@ -274,6 +292,7 @@ export default {
             this.applicationForm.id = application.id;
             this.applicationForm.name = application.name;
             this.applicationForm.description = application.description;
+            this.applicationForm.serial = application.serial;
             this.applicationForm.userId = application.userId;
         },
         async deleteApplication(applicationForm) {
@@ -297,6 +316,7 @@ export default {
             this.applicationForm.id = application.id;
             this.applicationForm.name = application.name;
             this.applicationForm.description = application.description;
+            this.applicationForm.serial = application.serial;
             this.applicationForm.status = application.status;
             this.applicationForm.userId = application.userId;
         },
@@ -322,6 +342,7 @@ export default {
             this.applicationForm.id = application.id;
             this.applicationForm.name = application.name;
             this.applicationForm.description = application.description;
+            this.applicationForm.serial = application.serial;
             this.applicationForm.status = application.status;
             this.applicationForm.userId = application.userId;
         },
