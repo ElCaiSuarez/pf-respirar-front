@@ -54,16 +54,16 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="application in applications" :key="application.id" v-on:click="">
+                            <tr v-for="application in applications" :key="application.id" v-on:click="" style="background-color: #a7aa0025">
                                 <th scope="row">{{ application.id }}</th>
                                 <td>{{ application.name }}</td>
                                 <td>{{ application.description }}</td>
                                 <td>{{ application.serial }}</td>
                                 <td>{{ application.status }}</td>
                                 <td><button @click="mostrarUpdate(application)"
-                                        class="btn btn-primary mb-3">Actualizar</button><br /></td>
+                                        class="btn btn-primary mb-3">Actualizar</button></td>
                                 <td><button @click="mostrarDelete(application)"
-                                        class="btn btn-danger mb-3">Borrar</button><br />
+                                        class="btn btn-danger mb-3">Borrar</button>
                                 </td>
                             </tr>
                         </tbody>
@@ -108,7 +108,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="application in applications" :key="application.id" v-on:click="">
+                            <tr v-for="application in applications" :key="application.id" v-on:click="" style="background-color: #a7aa0025">
                                 <th scope="row">{{ application.id }}</th>
                                 <td>{{ application.name }}</td>
                                 <td>{{ application.description }}</td>
@@ -116,9 +116,9 @@
                                 <td>{{ application.userId }}</td>
                                 <td>{{ application.status }}</td>
                                 <td><button @click="mostrarAccept(application)"
-                                        class="btn btn-success mb-3">Aceptar</button><br /></td>
+                                        class="btn btn-success mb-3">Aceptar</button></td>
                                 <td><button @click="mostrarReject(application)"
-                                        class="btn btn-danger mb-3">Rechazar</button><br />
+                                        class="btn btn-danger mb-3">Rechazar</button>
                                 </td>
                             </tr>
                         </tbody>

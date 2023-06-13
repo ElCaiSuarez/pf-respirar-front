@@ -23,9 +23,9 @@
         </div>
         <br />
         <div v-show="!sleccionarUsuario">
-            <button @click="volver()" class="btn btn-secondary mb-3">Volver</button><br />
-            <h2>Mis Estaciones: </h2><br />
-            <button @click="mostrarCrear(userSelected)" class="btn btn-success">Crear</button>
+            <button @click="volver()" class="btn btn-secondary mb-3">Volver</button>
+            <h2>Mis Estaciones: </h2>
+            <button @click="mostrarCrear(userSelected)" class="btn btn-success">Crear</button><br />
             <div class="alert alert-success" v-show="crear">
                 <label>Nombre </label><br />
                 <input v-model="stationPostName" required /><br />
@@ -51,7 +51,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="station in stations" :key="station.id" v-on:click="">
+                        <tr v-for="station in stations" :key="station.id" v-on:click=""  style="background-color: #a7aa0025">
                             <th scope="row">{{ station.id }}</th>
                             <td>{{ station.name }}</td>
                             <td>{{ station.description }}</td>

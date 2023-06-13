@@ -3,7 +3,6 @@
         <div>
             <h1>Estaciones: </h1><br />
             <div class="container">
-
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -13,7 +12,7 @@
                     <tbody>
                         <tr v-for="station in stations" :key="station.id" v-on:click="mostrarAlerta">
                             <div class="card">
-                                <div class="card-header">
+                                <div class="card-header" style="background-color: #30aa008c">
                                     <h5>{{ station.id }}  | <b>{{ station.name }}</b></h5>
                                 </div>
                                 <div class="card-body">
