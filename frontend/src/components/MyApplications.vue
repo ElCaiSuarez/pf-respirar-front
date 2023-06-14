@@ -256,7 +256,7 @@ export default {
             }
         },
         validateCreate() {
-            return this.applicationPostName.length > 3 && this.applicationPostDescription.length > 3
+            return this.applicationPostName.length > 3 && this.applicationPostDescription.length > 3 && this.applicationPostSerial.length > 3
         },
         async mostrarUpdate(application) {
             this.crear = false;

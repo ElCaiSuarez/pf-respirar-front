@@ -33,7 +33,7 @@
                 <input v-model="stationPostDescription" required /><br />
                 <label>Numero de Serie </label><br />
                 <input v-model="stationPostSerial" required /><br />
-                <span v-if="!isCreateValid">Nombre o Descripcion no válido</span><br />
+                <span v-if="!isCreateValid">Nombre/Descripcion/Serial no válido</span><br />
                 <button @click="createStation(stationPost)" class="btn btn-success mb-3"
                     v-if="isCreateValid">Guardar</button><br />
             </div>
@@ -142,6 +142,11 @@ export default {
         },
         volver() {
             this.sleccionarUsuario = true
+            this.borrar = false
+            this.editar = false
+            this.crear = false
+            this.mostrarOk = false
+            this.mostrarError = false
         },
         async getMyStation(userId) {
             try {
@@ -173,7 +178,7 @@ export default {
             }
         },
         validateCreate() {
-            return this.stationPostName.length > 3 && this.stationPostDescription.length > 3
+            return this.stationPostName.length > 3 && this.stationPostDescription.length > 3 && this.stationPostSerial.length > 3
         },
         async mostrarUpdate(station) {
             this.crear = false;
