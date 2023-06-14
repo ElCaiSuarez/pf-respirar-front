@@ -34,3 +34,19 @@ a,
     padding: 0 2rem;
   }
 }
+
+.margin-end-10{
+  margin-bottom: 10px;
+}
+
+.margin-end-20{
+  margin-bottom: 20px;
+}
+
+.margin-top-10{
+  margin-top: 10px;
+}
+
+.margin-top-20{
+  margin-top: 20px;
+}

@@ -8,11 +8,11 @@ async function createApplication(req,res) {
     res.status(200).send(application);
 }
 
-async function saveApplication(req,res) {//Cai: Agrego metodo para Patch
-    var application = await Application.getById(parseInt(req.body.id)); //Cai: Busco la estacion por id
-    application.name = req.body.name; //Cai: Reemplazo el name modificado
-    application.description = req.body.description //Cai: Reemplazo la description modificada
-    application.serial = req.body.serial //Cai: Reemplazo el serial modificado
+async function saveApplication(req,res) {
+    var application = await Application.getById(parseInt(req.body.id));
+    application.name = req.body.name;
+    application.description = req.body.description
+    application.serial = req.body.serial
     await Application.save(application);
     res.status(200).send(application);
 }
@@ -20,7 +20,7 @@ async function saveApplication(req,res) {//Cai: Agrego metodo para Patch
 async function listApplications(req, res) {
     var applications = await Application.getAll();
     
-    const userId = req.query.userId;//Cai: Cambio req.query.userid X req.query.userId
+    const userId = req.query.userId;
     if (userId && userId.trim() !== '') 
     {
         applications = applications.filter(st => st.userId === parseInt(userId));

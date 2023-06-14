@@ -19,7 +19,7 @@ router.post('/', async (req, res) => {
     return await stationController.createStation(req, res);
 });
 
-router.patch('/', async (req, res) => {//Cai: Agrego el metodo patch
+router.patch('/', async (req, res) => {
     return await stationController.saveStation(req, res);
 });
 
