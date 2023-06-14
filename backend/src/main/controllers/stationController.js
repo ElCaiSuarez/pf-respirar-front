@@ -10,17 +10,17 @@ async function createStation(req,res) {
 }
 
 async function saveStation(req,res) {
-    var stations = await Station.getById(parseInt(req.body.id)); //Cai: Busco la estacion por id
-    stations.name = req.body.name; //Cai: Reemplazo el name modificado
-    stations.description = req.body.description //Cai: Reemplazo la description modificada
-    stations.serial = req.body.serial //Cai: Reemplazo el serial modificado
+    var stations = await Station.getById(parseInt(req.body.id));
+    stations.name = req.body.name;
+    stations.description = req.body.description 
+    stations.serial = req.body.serial
     await Station.save(stations);
     res.status(200).send(stations);
 }
 
 async function listStations(req, res) {
     var stations = await Station.getAll();
-    const userId = req.query.userId;//Cai: Cambio req.query.userid X req.query.userId
+    const userId = req.query.userId;
     if (userId && userId.trim() !== '') 
     {
         stations = stations.filter(st => st.userId === parseInt(userId));

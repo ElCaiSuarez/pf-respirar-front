@@ -5,7 +5,6 @@ export default {
         try {
             console.log("Llamo a getStation");
             const res = await apiService.apiClient.get('/station');
-            //console.log(res.data);
             return res.data
         } catch (e) {
             throw e
@@ -15,7 +14,6 @@ export default {
         try {
             console.log("Llamo a getStation con Query");
             const res = await apiService.apiClient.get('/station', { params: { userId: userId }});
-            //console.log(res.data);
             return res.data
         } catch (e) {
             throw e
@@ -24,7 +22,6 @@ export default {
     async postStation(station) {
         try {
             const res = await apiService.apiClient.post('/station', station);
-            //console.log("El backend devolvio el siguiente mensaje: " + res.data);
             return res.data
 
         } catch (e) {
@@ -35,7 +32,6 @@ export default {
         const query = "/station/" + station.id
         try {
             let saved = await apiService.apiClient.delete(query);
-            //console.log("El backend devolvio el siguiente mensaje: " + saved.data);
             return saved.data;
 
         } catch (e) {
@@ -45,7 +41,6 @@ export default {
     async updateStation(station) {
         try {
             let saved = await apiService.apiClient.patch('/station', station);
-            //console.log("El backend devolvio el siguiente mensaje: " + saved.data);
             return saved.data;
         } catch (e) {
             throw e
