@@ -8,7 +8,7 @@ const create = async (data) => {
           //  .insert(data)
         data.id = Applications.size + 1;
         data.deleted = false;
-        data.status = "PENDING";
+        data.status = "Pendiente";
         Applications.set(data.id, data)
     } catch (error) {
         throw error;

@@ -30,7 +30,7 @@ async function listApplications(req, res) {
     {
         applications = applications.filter(st => st.type === type);
     }
-    applications = applications.filter(st => st.status === "PENDING");
+    applications = applications.filter(st => st.status === "Pendiente");
 
     applications = applications.filter(st => !st.deleted);
     res.status(200).send(applications);
@@ -43,19 +43,19 @@ async function getApplicationById(req, res) {
 
 async function rejectApplicationById(req, res) {
     var application = await Application.getById(parseInt(req.params.id));
-    application.status = "REJECTED";
+    application.status = "Rechazada";
     await Application.save(application);
     res.status(200).send(application);
 }
 
 async function acceptApplicationById(req, res) {
     var application = await Application.getById(parseInt(req.params.id));
-    application.status = "ACCEPTED";
+    application.status = "Aceptada";
     var station = {
         name: application.name,
         description: application.description,
         serial: application.serial,
-        type: "EXTERNAL",
+        type: "EXTERNA",
         userId: application.userId,
         deleted: false,
     }
