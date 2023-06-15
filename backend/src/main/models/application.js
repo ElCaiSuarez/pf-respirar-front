@@ -4,6 +4,10 @@ const Applications = new Map();
 
 const create = async (data) => {
     try {
+        const existingApplication = Array.from(Applications.values()).find(aplication => aplication.serial === data.serial);
+        if (existingApplication) {
+          throw new Error("Ya existe una solicitud con ese serial");
+        }
         //await knex(tableName)
           //  .insert(data)
         data.id = Applications.size + 1;
@@ -16,9 +20,16 @@ const create = async (data) => {
 }
 const save = async (data) => {
     try {
+        if (!data.status === "Rechazada"){ //para los save de acceptApplicationById y saveApplication
+            const existingApplication = Array.from(Applications.values()).find(aplication => aplication.serial === data.serial);
+            if (existingApplication) {
+                throw new Error("Ya existe una solicitud con ese serial");
+            }
+        }
         //await knex(tableName)
           //  .insert(data)
         Applications.set(data.id, data)
+        
     } catch (error) {
         throw error;
     }

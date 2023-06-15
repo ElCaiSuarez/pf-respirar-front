@@ -2,19 +2,34 @@ var Application = require('../models/application');
 var Station = require('../models/station');
 var Fiware = require('../services/fiware');
 
+var errorSolicitudDuplicada = "Ya existe una solicitud con ese serial"
+var errorEstacionDuplicada = "Ya existe una estacion con ese serial"
+
 async function createApplication(req,res) {
-    var application = req.body; 
-    await Application.create(application);
-    res.status(200).send(application);
+    try{
+        var application = req.body; 
+        await Application.create(application);
+        res.status(200).send(application);
+    } catch(error){
+        if (error.message === errorSolicitudDuplicada) {
+            res.status(400).send(errorSolicitudDuplicada);
+        }
+    }
 }
 
-async function saveApplication(req,res) {
-    var application = await Application.getById(parseInt(req.body.id));
-    application.name = req.body.name;
-    application.description = req.body.description
-    application.serial = req.body.serial
-    await Application.save(application);
-    res.status(200).send(application);
+async function saveApplication(req,res) { 
+    try{   
+        var application = await Application.getById(parseInt(req.body.id));
+        application.name = req.body.name;
+        application.description = req.body.description
+        application.serial = req.body.serial
+        await Application.save(application);
+        res.status(200).send(application);
+    } catch(error){
+        if (error.message === errorSolicitudDuplicada) {
+            res.status(400).send(errorSolicitudDuplicada);
+        }
+    }    
 }
 
 async function listApplications(req, res) {
@@ -49,20 +64,28 @@ async function rejectApplicationById(req, res) {
 }
 
 async function acceptApplicationById(req, res) {
-    var application = await Application.getById(parseInt(req.params.id));
-    application.status = "Aceptada";
-    var station = {
-        name: application.name,
-        description: application.description,
-        serial: application.serial,
-        type: "EXTERNA",
-        userId: application.userId,
-        deleted: false,
+    try{
+        var application = await Application.getById(parseInt(req.params.id));
+        application.status = "Aceptada";
+        var station = {
+            name: application.name,
+            description: application.description,
+            serial: application.serial,
+            type: "EXTERNA",
+            userId: application.userId,
+            deleted: false,
+        }
+        await Application.save(application);
+        await Station.create(station);
+        await Fiware.createStation(station)
+        res.status(200).send(application);
+    } catch(error){
+        if (error.message === errorSolicitudDuplicada) {
+            res.status(400).send(errorSolicitudDuplicada);
+        } else if ((error.message === errorEstacionDuplicada)) {
+            res.status(400).send(errorEstacionDuplicada);
+        }
     }
-    await Application.save(application);
-    await Station.create(station);
-    await Fiware.createStation(station)
-    res.status(200).send(application);
 }
 
 async function deleteById(req, res) {

@@ -4,6 +4,10 @@ const Stations = new Map();
 
 const create = async (data) => {
     try {
+        const existingStation = Array.from(Stations.values()).find(station => station.serial === data.serial);
+        if (existingStation) {
+          throw new Error("Ya existe una estacion con ese serial");
+        }
         //await knex(tableName)
           //  .insert(data)
         data.id = Stations.size + 1;
@@ -15,6 +19,10 @@ const create = async (data) => {
 }
 const save = async (data) => {
     try {
+        const existingStation = Array.from(Stations.values()).find(station => station.serial === data.serial);
+        if (existingStation) {
+          throw new Error("Ya existe una estacion con ese serial");
+        }
         //await knex(tableName)
           //  .insert(data)
         Stations.set(data.id, data)
