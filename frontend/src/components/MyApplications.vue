@@ -44,12 +44,24 @@
           <input v-model="applicationPostDescription" required /><br />
           <label>Numero de Serie </label><br />
           <input v-model="applicationPostSerial" required /><br />
-          <span v-if="!isCreateValid">Nombre/Descripcion/Serial no válido</span
+          <span v-if="!this.validateLongitud(applicationPostName, 4, 20)"
+            >Recordá que el nombre tiene que tener entre 4 y 20 caracteres</span
+          ><br />
+          <span v-if="!this.validateLongitud(applicationPostDescription, 4, 40)"
+            >Recordá que la descripción tiene que tener entre 4 y 40
+            caracteres</span
+          ><br />
+          <span v-if="!this.validateLongitud(applicationPostSerial, 4, 10)"
+            >Recordá que el serial tiene que tener entre 4 y 10 caracteres</span
           ><br />
           <button
             @click="createApplication(applicationPost)"
             class="btn btn-success mb-3"
-            v-if="isCreateValid"
+            v-if="
+              this.validateLongitud(applicationPostName, 4, 20) &&
+              this.validateLongitud(applicationPostDescription, 4, 40) &&
+              this.validateLongitud(applicationPostSerial, 4, 10)
+            "
           >
             Guardar</button
           ><br />
@@ -104,10 +116,28 @@
             <label>Descripcion </label><br />
             <input v-model="applicationForm.description" /><br />
             <label>Numero de Serie </label><br />
-            <input v-model="applicationForm.serial" /><br /><br />
+            <input v-model="applicationForm.serial" required /><br />
+            <span v-if="!this.validateLongitud(applicationForm.name, 4, 20)"
+              >Recordá que el nombre tiene que tener entre 4 y 20
+              caracteres</span
+            ><br />
+            <span
+              v-if="!this.validateLongitud(applicationForm.description, 4, 40)"
+              >Recordá que la descripción tiene que tener entre 4 y 40
+              caracteres</span
+            ><br />
+            <span v-if="!this.validateLongitud(applicationForm.serial, 4, 10)"
+              >Recordá que el serial tiene que tener entre 4 y 10
+              caracteres</span
+            ><br />
             <button
               @click="updateApplication(applicationForm)"
               class="btn btn-primary mb-3"
+              v-if="
+                this.validateLongitud(applicationForm.name, 4, 20) &&
+                this.validateLongitud(applicationForm.description, 4, 40) &&
+                this.validateLongitud(applicationForm.serial, 4, 10)
+              "
             >
               Guardar</button
             ><br />
@@ -161,6 +191,7 @@
                   <button
                     @click="mostrarAccept(application)"
                     class="btn btn-success mb-3"
+                    v-if="!this.aplicacionAceptada(application.status)"
                   >
                     Aceptar
                   </button>
@@ -229,12 +260,14 @@
 
 <script>
 import applicationService from "../services/applicationService";
+import stationService from "../services/stationService";
 import userService from "../services/userService";
 
 export default {
   data() {
     return {
       applications: [],
+      stations: [],
       applicationForm: {},
       applicationPost: {},
       applicationPostName: "",
@@ -254,6 +287,7 @@ export default {
       crear: false,
       editar: false,
       borrar: false,
+      serialProvi: "",
     };
   },
   mounted: function () {
@@ -264,9 +298,6 @@ export default {
       })
       .catch((error) => {
         this.mensajeError = error;
-        setTimeout(() => {
-          this.mostrarOk = false;
-        }, 3000);
         this.mostrarError = true;
       });
   },
@@ -289,6 +320,7 @@ export default {
     },
     async getMyApplication(userId, type) {
       try {
+        this.getMyStations();
         if (type === "ADMIN") {
           this.isAdmin = true;
           this.userSelected = userId;
@@ -301,9 +333,14 @@ export default {
         }
       } catch (e) {
         this.mensajeError = e;
-        setTimeout(() => {
-          this.mostrarOk = false;
-        }, 3000);
+        this.mostrarError = true;
+      }
+    },
+    async getMyStations() {
+      try {
+        this.stations = await stationService.getStation();
+      } catch (e) {
+        this.mensajeError = e;
         this.mostrarError = true;
       }
     },
@@ -326,20 +363,29 @@ export default {
         setTimeout(() => {
           this.mostrarOk = false;
         }, 2000);
-      } catch (e) {
-        this.mensajeError = e;
-        setTimeout(() => {
-          this.mostrarOk = false;
-        }, 3000);
+      } catch (error) {
+        if (error.response && error.response.status === 400) {
+          this.mensajeError = error.response.data;
+        } else {
+          this.mensajeError = error.message;
+        }
         this.mostrarError = true;
+        setTimeout(() => {
+          this.mostrarError = false;
+        }, 3000);
       }
     },
-    validateCreate() {
-      return (
-        this.applicationPostName.length > 3 &&
-        this.applicationPostDescription.length > 3 &&
-        this.applicationPostSerial.length > 3
-      );
+    validateLongitud(nombre, longMin, longMax) {
+      var result = false;
+      if (nombre != null) {
+        if (nombre.length >= longMin && nombre.length <= longMax) {
+          result = true;
+        }
+      }
+      return result;
+    },
+    aplicacionAceptada(estado) {
+      return estado == "Aceptada";
     },
     async mostrarUpdate(application) {
       this.crear = false;
@@ -352,6 +398,8 @@ export default {
       this.applicationForm.description = application.description;
       this.applicationForm.serial = application.serial;
       this.applicationForm.userId = application.userId;
+      this.applicationForm.status = application.status;
+      this.serialProvi = application.serial;
     },
     async updateApplication(applicationForm) {
       try {
@@ -368,12 +416,16 @@ export default {
         setTimeout(() => {
           this.mostrarOk = false;
         }, 2000);
-      } catch (e) {
-        this.mensajeError = e;
-        setTimeout(() => {
-          this.mostrarOk = false;
-        }, 3000);
+      } catch (error) {
+        if (error.response && error.response.status === 400) {
+          this.mensajeError = error.response.data;
+        } else {
+          this.mensajeError = error.message;
+        }
         this.mostrarError = true;
+        setTimeout(() => {
+          this.mostrarError = false;
+        }, 3000);
       }
     },
     async mostrarDelete(application) {
@@ -387,6 +439,7 @@ export default {
       this.applicationForm.description = application.description;
       this.applicationForm.serial = application.serial;
       this.applicationForm.userId = application.userId;
+      this.applicationForm.status = application.status;
     },
     async deleteApplication(applicationForm) {
       try {
@@ -402,9 +455,6 @@ export default {
         }, 2000);
       } catch (e) {
         this.mensajeError = e;
-        setTimeout(() => {
-          this.mostrarOk = false;
-        }, 3000);
         this.mostrarError = true;
       }
     },
@@ -436,12 +486,16 @@ export default {
         setTimeout(() => {
           this.mostrarOk = false;
         }, 2000);
-      } catch (e) {
-        this.mensajeError = e;
-        setTimeout(() => {
-          this.mostrarOk = false;
-        }, 3000);
+      } catch (error) {
+        if (error.response && error.response.status === 400) {
+          this.mensajeError = error.response.data;
+        } else {
+          this.mensajeError = error.message;
+        }
         this.mostrarError = true;
+        setTimeout(() => {
+          this.mostrarError = false;
+        }, 3000);
       }
     },
     async mostrarReject(application) {
@@ -471,17 +525,10 @@ export default {
         }, 2000);
       } catch (e) {
         this.mensajeError = e;
-        setTimeout(() => {
-          this.mostrarOk = false;
-        }, 3000);
         this.mostrarError = true;
       }
     },
   },
-  computed: {
-    isCreateValid() {
-      return this.validateCreate();
-    },
-  },
+  computed: {},
 };
 </script>

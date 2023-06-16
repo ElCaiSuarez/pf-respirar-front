@@ -4,27 +4,30 @@ const Stations = new Map();
 
 const create = async (data) => {
     try {
-        const existingStation = Array.from(Stations.values()).find(station => station.serial === data.serial);
-        if (existingStation) {
-          throw new Error("Ya existe una estacion con ese serial");
+        for (const [id, station] of Stations.entries()) {        
+            if (station.serial === data.serial) {            
+                throw new Error("Ya existe una estacion con ese serial");
+            }
         }
         //await knex(tableName)
-          //  .insert(data)
+            //  .insert(data)
         data.id = Stations.size + 1;
         data.deleted = false;
-        Stations.set(data.id, data)
+        Stations.set(data.id, data) 
     } catch (error) {
         throw error;
-    }
+    }   
 }
-const save = async (data) => {
+
+const save = async (data) =>{    
     try {
-        const existingStation = Array.from(Stations.values()).find(station => station.serial === data.serial);
-        if (existingStation) {
-          throw new Error("Ya existe una estacion con ese serial");
+        for (const [id, station] of Stations.entries()) {
+            if (station.serial === data.serial) {
+                throw new Error("Ya existe una estacion con ese serial");
+            }
         }
         //await knex(tableName)
-          //  .insert(data)
+            //  .insert(data)
         Stations.set(data.id, data)
     } catch (error) {
         throw error;

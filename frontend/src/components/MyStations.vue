@@ -42,12 +42,23 @@
           <input v-model="stationPostDescription" required /><br />
           <label>Numero de Serie </label><br />
           <input v-model="stationPostSerial" required /><br />
-          <span v-if="!isCreateValid">Nombre/Descripcion/Serial no válido</span
+          <span v-if="!this.validateLongitud(stationPostName, 4, 20)"
+            >El nombre tiene que tener entre 4 y 20 caracteres</span
+          ><br />
+          <span v-if="!this.validateLongitud(stationPostDescription, 4, 40)"
+            >La descripción tiene que tener entre 4 y 40 caracteres</span
+          ><br />
+          <span v-if="!this.validateLongitud(stationPostSerial, 4, 10)"
+            >El serial tiene que tener entre 4 y 10 caracteres</span
           ><br />
           <button
             @click="createStation(stationPost)"
             class="btn btn-success mb-3"
-            v-if="isCreateValid"
+            v-if="
+              this.validateLongitud(stationPostName, 4, 20) &&
+              this.validateLongitud(stationPostDescription, 4, 40) &&
+              this.validateLongitud(stationPostSerial, 4, 10)
+            "
           >
             Guardar</button
           ><br />
@@ -103,9 +114,23 @@
             <input v-model="stationForm.description" /><br />
             <label>Numero de Serie </label><br />
             <input v-model="stationForm.serial" /><br /><br />
+            <span v-if="!this.validateLongitud(stationForm.name, 4, 20)"
+              >El nombre tiene que tener entre 4 y 20 caracteres</span
+            ><br />
+            <span v-if="!this.validateLongitud(stationForm.description, 4, 40)"
+              >La descripción tiene que tener entre 4 y 40 caracteres</span
+            ><br />
+            <span v-if="!this.validateLongitud(stationForm.serial, 4, 10)"
+              >El serial tiene que tener entre 4 y 10 caracteres</span
+            ><br />
             <button
               @click="updateStation(stationForm)"
               class="btn btn-primary mb-3"
+              v-if="
+                this.validateLongitud(stationForm.name, 4, 20) &&
+                this.validateLongitud(stationForm.description, 4, 40) &&
+                this.validateLongitud(stationForm.serial, 4, 10)
+              "
             >
               Guardar</button
             ><br />
@@ -151,6 +176,7 @@ export default {
   data() {
     return {
       stations: [],
+      stationsTotal: [],
       stationForm: {},
       stationPost: {},
       stationPostName: "",
@@ -170,6 +196,7 @@ export default {
       crear: false,
       editar: false,
       borrar: false,
+      serialProvi: "",
     };
   },
   mounted: function () {
@@ -180,9 +207,6 @@ export default {
       })
       .catch((error) => {
         this.mensajeError = error;
-        setTimeout(() => {
-          this.mostrarOk = false;
-        }, 3000);
         this.mostrarError = true;
       });
   },
@@ -208,12 +232,10 @@ export default {
         this.isAdmin = userId === 1;
         this.userSelected = userId;
         this.stations = await stationService.getMyStation(userId);
+        this.stationsTotal = await stationService.getStation();
         this.seleccionarUsuario = false;
       } catch (e) {
         this.mensajeError = e;
-        setTimeout(() => {
-          this.mostrarOk = false;
-        }, 3000);
         this.mostrarError = true;
       }
     },
@@ -234,20 +256,26 @@ export default {
         setTimeout(() => {
           this.mostrarOk = false;
         }, 2000);
-      } catch (e) {
-        this.mensajeError = e;
-        setTimeout(() => {
-          this.mostrarOk = false;
-        }, 3000);
+      } catch (error) {
+        if (error.response && error.response.status === 400) {
+          this.mensajeError = error.response.data;
+        } else {
+          this.mensajeError = error.message;
+        }
         this.mostrarError = true;
+        setTimeout(() => {
+          this.mostrarError = false;
+        }, 3000);
       }
     },
-    validateCreate() {
-      return (
-        this.stationPostName.length > 3 &&
-        this.stationPostDescription.length > 3 &&
-        this.stationPostSerial.length > 3
-      );
+    validateLongitud(nombre, longMin, longMax) {
+      var result = false;
+      if (nombre != null) {
+        if (nombre.length >= longMin && nombre.length <= longMax) {
+          result = true;
+        }
+      }
+      return result;
     },
     async mostrarUpdate(station) {
       this.crear = false;
@@ -260,6 +288,7 @@ export default {
       this.stationForm.description = station.description;
       this.stationForm.serial = station.serial;
       this.stationForm.userId = station.userId;
+      this.serialProvi = station.serial;
     },
     async updateStation(stationForm) {
       try {
@@ -272,12 +301,16 @@ export default {
         setTimeout(() => {
           this.mostrarOk = false;
         }, 2000);
-      } catch (e) {
-        this.mensajeError = e;
-        setTimeout(() => {
-          this.mostrarOk = false;
-        }, 3000);
+      } catch (error) {
+        if (error.response && error.response.status === 400) {
+          this.mensajeError = error.response.data;
+        } else {
+          this.mensajeError = error.message;
+        }
         this.mostrarError = true;
+        setTimeout(() => {
+          this.mostrarError = false;
+        }, 3000);
       }
     },
     async mostrarDelete(station) {
@@ -304,17 +337,10 @@ export default {
         }, 2000);
       } catch (e) {
         this.mensajeError = e;
-        setTimeout(() => {
-          this.mostrarOk = false;
-        }, 3000);
         this.mostrarError = true;
       }
     },
   },
-  computed: {
-    isCreateValid() {
-      return this.validateCreate();
-    },
-  },
+  computed: {},
 };
 </script>

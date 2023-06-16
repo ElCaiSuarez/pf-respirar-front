@@ -19,12 +19,18 @@ async function createStation(req,res) {
 
 async function saveStation(req,res) {
     try{
-        var stations = await Station.getById(parseInt(req.body.id));
-        stations.name = req.body.name;
-        stations.description = req.body.description 
-        stations.serial = req.body.serial
-        await Station.save(stations);
-        res.status(200).send(stations);
+        var station = await Station.getById(parseInt(req.body.id));
+        const updateStation = { 
+            id: req.body.id,            
+            name: req.body.name,
+            description: req.body.description,
+            serial: req.body.serial,
+            userId: req.body.userId,
+            type: "RESPIRAR",
+            deleted: req.body.deleted
+        }        
+        await Station.save(updateStation);
+        res.status(200).send(updateStation);
     } catch(error){
         if (error.message === "Ya existe una estacion con ese serial") {
             res.status(400).send("Ya existe una estacion con ese serial");
