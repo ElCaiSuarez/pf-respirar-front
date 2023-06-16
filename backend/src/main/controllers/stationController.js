@@ -2,20 +2,36 @@ var Station = require('../models/station');
 var Fiware = require('../services/fiware');
 
 async function createStation(req,res) {
-    var station = req.body; 
-    station.type = "RESPIRAR";
-    await Station.create(station);
-    await Fiware.createStation(station)
-    res.status(200).send(station);
+    try{
+        var station = req.body; 
+        station.type = "RESPIRAR";
+        await Station.create(station);
+        await Fiware.createStation(station)
+        res.status(200).send(station);
+    } catch(error){
+        if (error.message === "Ya existe una estacion con ese serial") {
+            res.status(400).send("Ya existe una estacion con ese serial");
+        } else {
+            res.status(500).send("Internal server error");
+        }
+    }    
 }
 
 async function saveStation(req,res) {
-    var stations = await Station.getById(parseInt(req.body.id));
-    stations.name = req.body.name;
-    stations.description = req.body.description 
-    stations.serial = req.body.serial
-    await Station.save(stations);
-    res.status(200).send(stations);
+    try{
+        var stations = await Station.getById(parseInt(req.body.id));
+        stations.name = req.body.name;
+        stations.description = req.body.description 
+        stations.serial = req.body.serial
+        await Station.save(stations);
+        res.status(200).send(stations);
+    } catch(error){
+        if (error.message === "Ya existe una estacion con ese serial") {
+            res.status(400).send("Ya existe una estacion con ese serial");
+        } else {
+            res.status(500).send("Internal server error");
+        }
+    }
 }
 
 async function listStations(req, res) {

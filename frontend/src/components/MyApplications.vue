@@ -264,6 +264,9 @@ export default {
       })
       .catch((error) => {
         this.mensajeError = error;
+        setTimeout(() => {
+          this.mostrarOk = false;
+        }, 3000);
         this.mostrarError = true;
       });
   },
@@ -298,6 +301,9 @@ export default {
         }
       } catch (e) {
         this.mensajeError = e;
+        setTimeout(() => {
+          this.mostrarOk = false;
+        }, 3000);
         this.mostrarError = true;
       }
     },
@@ -322,6 +328,9 @@ export default {
         }, 2000);
       } catch (e) {
         this.mensajeError = e;
+        setTimeout(() => {
+          this.mostrarOk = false;
+        }, 3000);
         this.mostrarError = true;
       }
     },
@@ -361,6 +370,9 @@ export default {
         }, 2000);
       } catch (e) {
         this.mensajeError = e;
+        setTimeout(() => {
+          this.mostrarOk = false;
+        }, 3000);
         this.mostrarError = true;
       }
     },
@@ -390,6 +402,9 @@ export default {
         }, 2000);
       } catch (e) {
         this.mensajeError = e;
+        setTimeout(() => {
+          this.mostrarOk = false;
+        }, 3000);
         this.mostrarError = true;
       }
     },
@@ -423,6 +438,9 @@ export default {
         }, 2000);
       } catch (e) {
         this.mensajeError = e;
+        setTimeout(() => {
+          this.mostrarOk = false;
+        }, 3000);
         this.mostrarError = true;
       }
     },
@@ -453,6 +471,9 @@ export default {
         }, 2000);
       } catch (e) {
         this.mensajeError = e;
+        setTimeout(() => {
+          this.mostrarOk = false;
+        }, 3000);
         this.mostrarError = true;
       }
     },
