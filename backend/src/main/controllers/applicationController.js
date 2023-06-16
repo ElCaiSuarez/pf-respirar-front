@@ -7,7 +7,7 @@ var errorEstacionDuplicada = "Ya existe una estacion con ese serial"
 
 async function createApplication(req,res) {
     try{
-        var application = req.body; 
+        var application = req.body;
         await Application.create(application);
         res.status(200).send(application);
     } catch(error){
@@ -20,11 +20,17 @@ async function createApplication(req,res) {
 async function saveApplication(req,res) { 
     try{   
         var application = await Application.getById(parseInt(req.body.id));
-        application.name = req.body.name;
-        application.description = req.body.description
-        application.serial = req.body.serial
-        await Application.save(application);
-        res.status(200).send(application);
+        const updateApplication = { 
+            id: req.body.id,            
+            name: req.body.name,
+            description: req.body.description,
+            serial: req.body.serial,
+            userId: req.body.userId,
+            deleted: req.body.deleted,
+            status:req.body.status,
+        } 
+        await Application.save(updateApplication);
+        res.status(200).send(updateApplication);
     } catch(error){
         if (error.message === errorSolicitudDuplicada) {
             res.status(400).send(errorSolicitudDuplicada);
