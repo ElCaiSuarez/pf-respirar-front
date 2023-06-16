@@ -115,8 +115,8 @@
             <input v-model="applicationForm.name" /><br />
             <label>Descripcion </label><br />
             <input v-model="applicationForm.description" /><br />
-            <label>Numero de Serie </label><br />
-            <input v-model="applicationForm.serial" required /><br />
+            <!-- <label>Numero de Serie </label><br />
+            <input v-model="applicationForm.serial" required /><br /> -->
             <span v-if="!this.validateLongitud(applicationForm.name, 4, 20)"
               >Recordá que el nombre tiene que tener entre 4 y 20
               caracteres</span
@@ -126,17 +126,17 @@
               >Recordá que la descripción tiene que tener entre 4 y 40
               caracteres</span
             ><br />
-            <span v-if="!this.validateLongitud(applicationForm.serial, 4, 10)"
+            <!-- <span v-if="!this.validateLongitud(applicationForm.serial, 4, 10)"
               >Recordá que el serial tiene que tener entre 4 y 10
               caracteres</span
-            ><br />
+            ><br /> -->
             <button
               @click="updateApplication(applicationForm)"
               class="btn btn-primary mb-3"
               v-if="
                 this.validateLongitud(applicationForm.name, 4, 20) &&
-                this.validateLongitud(applicationForm.description, 4, 40) &&
-                this.validateLongitud(applicationForm.serial, 4, 10)
+                this.validateLongitud(applicationForm.description, 4, 40) /* &&
+                this.validateLongitud(applicationForm.serial, 4, 10) */
               "
             >
               Guardar</button
@@ -287,7 +287,7 @@ export default {
       crear: false,
       editar: false,
       borrar: false,
-      serialProvi: "",
+      //serialProvi: "",
     };
   },
   mounted: function () {
@@ -399,7 +399,7 @@ export default {
       this.applicationForm.serial = application.serial;
       this.applicationForm.userId = application.userId;
       this.applicationForm.status = application.status;
-      this.serialProvi = application.serial;
+      //this.serialProvi = application.serial;
     },
     async updateApplication(applicationForm) {
       try {

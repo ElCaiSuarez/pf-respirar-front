@@ -22,6 +22,8 @@ const create = async (data) => {
 
 const save = async (data) => {
     try {
+        Applications.set(data.id, data)
+        /*
         if (data.status === "Pendiente"){ //para los save de acceptApplicationById y saveApplication            
             for (const [id, application] of Applications.entries()) {
                 if (application.serial === data.serial) {
@@ -32,7 +34,8 @@ const save = async (data) => {
             //await knex(tableName)
             //  .insert(data)
             Applications.set(data.id, data)
-        }       
+        }
+        */       
     } catch (error) {
         throw error;
     }
