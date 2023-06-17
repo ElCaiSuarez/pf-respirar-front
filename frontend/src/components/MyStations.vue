@@ -102,7 +102,7 @@
                         <label>Nombre </label><br />
                         <input v-model="stationForm.name" disabled /> <br />
                         <label>Descripcion </label><br />
-                        <input v-model="stationForm.description" disabled /><br /><br />
+                        <input v-model="stationForm.description" disabled /><br />
                         <label>Numero de Serie </label><br />
                         <input v-model="stationForm.serial" disabled /><br /><br />
                         <button @click="deleteStation(stationForm)" class="btn btn-danger mb-3">

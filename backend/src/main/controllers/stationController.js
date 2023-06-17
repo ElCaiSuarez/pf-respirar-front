@@ -19,24 +19,13 @@ async function createStation(req,res) {
 
 async function saveStation(req,res) {
     try{
-        var station = await Station.getById(parseInt(req.body.id));
-        const updateStation = { 
-            id: req.body.id,            
-            name: req.body.name,
-            description: req.body.description,
-            serial: req.body.serial,
-            userId: req.body.userId,
-            type: "RESPIRAR",
-            deleted: req.body.deleted
-        }        
-        await Station.save(updateStation);
-        res.status(200).send(updateStation);
+        var station = await Station.getById(parseInt(req.body.id)); //Cai: Busco la estacion por id
+        station.name = req.body.name; //Cai: Reemplazo el name modificado
+        station.description = req.body.description //Cai: Reemplazo la description modificada
+        await Station.save(station);
+        res.status(200).send(station);
     } catch(error){
-        if (error.message === "Ya existe una estacion con ese serial") {
-            res.status(400).send("Ya existe una estacion con ese serial");
-        } else {
-            res.status(500).send("Internal server error");
-        }
+        res.status(500).send("Internal server error");
     }
 }
 

@@ -13,7 +13,7 @@ const create = async (data) => {
             //  .insert(data)
         data.id = Stations.size + 1;
         data.deleted = false;
-        Stations.set(data.id, data) 
+        Stations.set(data.id, data)
     } catch (error) {
         throw error;
     }   
@@ -21,22 +21,11 @@ const create = async (data) => {
 
 const save = async (data) =>{    
     try {
-        /*
-        for (const [id, station] of Stations.entries()) {
-            if (station.serial === data.serial) {
-                throw new Error("Ya existe una estacion con ese serial");
-            }
-        }
-        */
-        //await knex(tableName)
-            //  .insert(data)
         Stations.set(data.id, data)
     } catch (error) {
         throw error;
     }
 }
-
-
 
 const erase = async (data) => {
     try {

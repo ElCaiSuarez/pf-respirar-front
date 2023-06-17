@@ -5,53 +5,46 @@ var Fiware = require('../services/fiware');
 var errorSolicitudDuplicada = "Ya existe una solicitud con ese serial"
 var errorEstacionDuplicada = "Ya existe una estacion con ese serial"
 
-async function createApplication(req,res) {
-    try{
+async function createApplication(req, res) {
+    try {
         var application = req.body;
         await Application.create(application);
         res.status(200).send(application);
-    } catch(error){
+    } catch (error) {
         if (error.message === errorSolicitudDuplicada) {
             res.status(400).send(errorSolicitudDuplicada);
         }
     }
 }
 
-async function saveApplication(req,res) { 
-    try{   
-        var application = await Application.getById(parseInt(req.body.id));
-        const updateApplication = { 
-            id: req.body.id,            
-            name: req.body.name,
-            description: req.body.description,
-            serial: req.body.serial,
-            userId: req.body.userId,
-            deleted: req.body.deleted,
-            status:req.body.status,
-        } 
-        await Application.save(updateApplication);
-        res.status(200).send(updateApplication);
-    } catch(error){
-        if (error.message === errorSolicitudDuplicada) {
-            res.status(400).send(errorSolicitudDuplicada);
-        }
-    }    
+async function saveApplication(req, res) {
+    try {
+        var application = await Application.getById(parseInt(req.body.id)); //Cai: Busco la solicitud por id
+        application.name = req.body.name; //Cai: Reemplazo el name modificado
+        application.description = req.body.description //Cai: Reemplazo la description modificada
+        await Application.save(application);
+        res.status(200).send(application);
+    } catch (error) {
+        res.status(500).send("Internal server error");
+    }
 }
 
 async function listApplications(req, res) {
     var applications = await Application.getAll();
-    
+
     const userId = req.query.userId;
-    if (userId && userId.trim() !== '') 
-    {
+    if (userId && userId.trim() !== '') {
         applications = applications.filter(st => st.userId === parseInt(userId));
     }
-    const type = req.query.type;
-    if (type && type.trim() !== '') 
-    {
+    const status = req.query.status;//Cai: Agrego filtro por status
+    if (status && status.trim() !== '') {
+        applications = applications.filter(st => st.status === status);
+    }
+    const type = req.query.type;//Cai: Modifico type por status
+    if (type && type.trim() !== '') {
         applications = applications.filter(st => st.type === type);
     }
-    applications = applications.filter(st => st.status === "Pendiente");
+    //applications = applications.filter(st => st.status === "Pendiente"); //Cai: Saco el filtro para Mis Solicitudes / Rol User
 
     applications = applications.filter(st => !st.deleted);
     res.status(200).send(applications);
@@ -70,7 +63,7 @@ async function rejectApplicationById(req, res) {
 }
 
 async function acceptApplicationById(req, res) {
-    try{
+    try {
         var application = await Application.getById(parseInt(req.params.id));
         application.status = "Aceptada";
         var station = {
@@ -85,7 +78,7 @@ async function acceptApplicationById(req, res) {
         await Station.create(station);
         await Fiware.createStation(station)
         res.status(200).send(application);
-    } catch(error){
+    } catch (error) {
         if (error.message === errorSolicitudDuplicada) {
             res.status(400).send(errorSolicitudDuplicada);
         } else if ((error.message === errorEstacionDuplicada)) {

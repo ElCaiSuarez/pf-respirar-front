@@ -10,10 +10,20 @@ export default {
             throw e
         }
     },
-    async getMyApplication(userId) {
+    async getUserApplication(userId) {
         try {
             console.log("Llamo a getApplication con Query");
             const res = await apiService.apiClient.get('/application', { params: { userId: userId }});
+            return res.data
+        } catch (e) {
+            throw e
+        }
+    },
+    async getAdminApplication() {
+        try {
+            console.log("Llamo a getApplication con Query");
+            const status = "Pendiente"
+            const res = await apiService.apiClient.get('/application', { params: { status: status }});
             return res.data
         } catch (e) {
             throw e

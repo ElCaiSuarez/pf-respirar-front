@@ -94,6 +94,7 @@
                   <button
                     @click="mostrarUpdate(application)"
                     class="btn btn-primary mb-3"
+                    v-if="this.isPending(application.status)"
                   >
                     Actualizar
                   </button>
@@ -102,6 +103,7 @@
                   <button
                     @click="mostrarDelete(application)"
                     class="btn btn-danger mb-3"
+                    v-if="this.isPending(application.status)"
                   >
                     Borrar
                   </button>
@@ -191,7 +193,7 @@
                   <button
                     @click="mostrarAccept(application)"
                     class="btn btn-success mb-3"
-                    v-if="!this.aplicacionAceptada(application.status)"
+                    v-if="this.isPending(application.status)"
                   >
                     Aceptar
                   </button>
@@ -200,6 +202,7 @@
                   <button
                     @click="mostrarReject(application)"
                     class="btn btn-danger mb-3"
+                    v-if="this.isPending(application.status)"
                   >
                     Rechazar
                   </button>
@@ -320,15 +323,15 @@ export default {
     },
     async getMyApplication(userId, type) {
       try {
-        this.getMyStations();
+        //this.getMyStations();
         if (type === "ADMIN") {
           this.isAdmin = true;
           this.userSelected = userId;
-          this.applications = await applicationService.getApplication();
+          this.applications = await applicationService.getAdminApplication();
           this.seleccionarUsuario = false;
         } else {
           this.userSelected = userId;
-          this.applications = await applicationService.getMyApplication(userId);
+          this.applications = await applicationService.getUserApplication(userId);
           this.seleccionarUsuario = false;
         }
       } catch (e) {
@@ -386,6 +389,9 @@ export default {
     },
     aplicacionAceptada(estado) {
       return estado == "Aceptada";
+    },
+    isPending(estado){
+      return estado == "Pendiente"
     },
     async mostrarUpdate(application) {
       this.crear = false;
@@ -479,7 +485,7 @@ export default {
         );
         this.applications[index] = await applicationService.acceptApplication(
           applicationForm
-        );
+        ); 
         this.editar = false;
         this.mensajeOk = "Solicitud Aceptada";
         this.mostrarOk = true;
@@ -514,9 +520,12 @@ export default {
     async rejectApplication(applicationForm) {
       try {
         console.log("Solicitud Rechazada: " + applicationForm);
-        this.applications.pop(
-          await applicationService.rejectApplication(applicationForm)
+        const index = this.applications.findIndex(
+          (s) => s.id === applicationForm.id
         );
+        this.applications[index] = await applicationService.rejectApplication(
+          applicationForm
+        ); 
         this.borrar = false;
         this.mensajeOk = "Solicitud Rechazada";
         this.mostrarOk = true;
