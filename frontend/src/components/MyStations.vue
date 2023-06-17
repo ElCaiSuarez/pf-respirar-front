@@ -10,6 +10,7 @@
                             <th scope="col">#</th>
                             <th scope="col">Nombre</th>
                             <th scope="col">Correo</th>
+                            <th scope="col">Rol</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -17,6 +18,7 @@
                             <th scope="row">{{ user.id }}</th>
                             <td>{{ user.username }}</td>
                             <td>{{ user.email }}</td>
+                            <td>{{ user.type }}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -24,7 +26,7 @@
         </div>
         <div class="margin-top-10" v-show="!seleccionarUsuario">
             <div v-if="isAdmin">
-                <h2 class="margin-end-20">Estaciones RespirAR</h2>
+                <h2 class="margin-end-20">Estaciones RespirAR | Admin</h2>
                 <button @click="mostrarCrear(userSelected)" class="btn btn-success margin-end-20">
                     Crear estacion RespirAR
                 </button>
@@ -111,7 +113,7 @@
                 </div>
             </div>
             <div v-else>
-                <label class="alert alert-secondary">Solo los usuarios RespirAR puden crear estaciones RespirAR</label>
+                <label class="alert alert-secondary">Solo los usuarios Admin puden crear estaciones RespirAR</label>
             </div>
             <div v-show="mostrarError">
                 <label class="alert alert-danger">{{ mensajeError }}</label>

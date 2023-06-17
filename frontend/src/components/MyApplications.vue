@@ -103,7 +103,7 @@
                   <button
                     @click="mostrarDelete(application)"
                     class="btn btn-danger mb-3"
-                    v-if="this.isPending(application.status)"
+                    v-if="this.isPendingOrAccepted(application.status)"
                   >
                     Borrar
                   </button>
@@ -387,8 +387,8 @@ export default {
       }
       return result;
     },
-    aplicacionAceptada(estado) {
-      return estado == "Aceptada";
+    isPendingOrAccepted(estado) {
+      return estado == "Aceptada" || estado == "Pendiente";
     },
     isPending(estado){
       return estado == "Pendiente"
@@ -450,11 +450,18 @@ export default {
     async deleteApplication(applicationForm) {
       try {
         console.log("Solicitud Borrada: " + applicationForm);
-        this.applications.pop(
+        if(applicationForm.status == 'Aceptada'){
+          //Borrar la Solicitud y la Estacion (Podemos usar el Numero de Serie para Buscar la Estacion)
+          this.mensajeOk = "ToDo: Borrar la Solicitud y la Estacion";
+        }else{
+          //Borro Solicitud Pendiente
+          this.applications.pop(
           await applicationService.deleteApplication(applicationForm)
         );
-        this.borrar = false;
         this.mensajeOk = "Solicitud Borrada";
+        }        
+        this.borrar = false;
+        
         this.mostrarOk = true;
         setTimeout(() => {
           this.mostrarOk = false;

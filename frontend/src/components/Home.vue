@@ -6,7 +6,7 @@
       <div class="card-header">Sprint 1</div>
       <div class="card-body">
         <h5 class="card-title">Ver Estaciones</h5>
-        <p class="card-text">Visualizar las Estaciones registradas</p>
+        <p class="card-text">Visualizar las Estaciones registradas y su ultima medicion</p>
         <a href="/station" class="btn btn-primary">Estaciones</a>
       </div>
     </div>

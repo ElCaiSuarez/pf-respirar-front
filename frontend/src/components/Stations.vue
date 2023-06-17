@@ -1,7 +1,7 @@
 <template>
   <div>
     <div>
-      <h2 class="margin-top-20">Lista de Estaciones</h2>
+      <!-- <h2 class="margin-top-20">Lista de Estaciones</h2> -->
       <div class="container">
         <table class="table table-hover">
           <thead>
@@ -10,11 +10,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr
-              v-for="station in stations"
-              :key="station.id"
-              v-on:click="mostrarAlerta"
-            >
+            <tr v-for="station in stations" :key="station.id" v-on:click="stationId = station.id; isShow = !isShow">
               <div class="card">
                 <div class="card-header" style="background-color: #30aa008c">
                   <div>
@@ -22,12 +18,22 @@
                   </div>
                 </div>
                 <div class="card-body">
-                  <div class="card-title">Tipo: {{ station.type }}</div>
-                  <p class="card-text">
+                  <div class="card-title"><b>Tipo: </b>{{ station.type }}</div>
+                  <div class="card-title">
                     <b>Descripcion: </b>{{ station.description }} |
                     <b>Numero de Serie: </b>{{ station.serial }} |
                     <b>Usuario: </b>{{ station.userId }}
-                  </p>
+                  </div>
+                  <div class="card-title">
+                    <b>Geolocacion: </b> X | Y <a href="#" class="card-link">Mostrar Estacion en el Mapa</a>
+                  </div>
+                </div>
+                <div v-show="isShow && stationId == station.id">
+                  <ul class="list-group list-group-flush">
+                    <li class="list-group-item"><b>Sensor de temperatura y humedad: </b> Ultimo Dato</li>
+                    <li class="list-group-item"><b>Sensor de partículas:</b> Ultimo Dato</li>
+                    <li class="list-group-item"><b>Sensor de NO2:</b> Ultimo Dato</li>
+                  </ul>
                 </div>
               </div>
             </tr>
@@ -54,12 +60,16 @@ export default {
       stations: [],
       mostrarError: false,
       mensajeError: "",
+      stationId: null,
+      isShow: false,
+      mostrarMediciones: false,
     };
   },
   mounted: function () {
     stationService
       .getStation()
       .then((res) => {
+
         this.stations = res;
       })
       .catch((error) => {
@@ -69,8 +79,8 @@ export default {
   },
   methods: {
     async mostrarAlerta() {
-      alert("Mostrar Estacion en Mapa (Geo ToDo)");
-    },
+            alert("Mostrar Estacion en Mapa (Geo ToDo)")
+        }
   },
 };
 </script>
