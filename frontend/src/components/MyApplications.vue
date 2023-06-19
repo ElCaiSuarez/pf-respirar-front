@@ -30,7 +30,7 @@
     </div>
     <div class="margin-top-10" v-show="!seleccionarUsuario">
       <div v-show="!isAdmin">
-        <h2 class="margin-end-20">Estaciones Externas | User</h2>
+        <h2 class="margin-end-20">Mis Solicitudes | User</h2>
         <button
           @click="mostrarCrear(userSelected)"
           class="btn btn-success margin-end-20"
@@ -103,7 +103,7 @@
                   <button
                     @click="mostrarDelete(application)"
                     class="btn btn-danger mb-3"
-                    v-if="this.isPendingOrAccepted(application.status)"
+                    v-if="this.isPending(application.status)"
                   >
                     Borrar
                   </button>
@@ -162,7 +162,7 @@
         </div>
       </div>
       <div v-show="isAdmin">
-        <h2 class="margin-end-20">Estaciones Externas | Admin</h2>
+        <h2 class="margin-end-20">Mis Solicitudes | Admin</h2>
         <div class="container">
           <table class="table table-hover">
             <thead>

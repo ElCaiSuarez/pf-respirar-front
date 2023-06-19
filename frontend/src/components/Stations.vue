@@ -25,7 +25,7 @@
                     <b>Usuario: </b>{{ station.userId }}
                   </div>
                   <div class="card-title">
-                    <b>Geolocacion: </b> X | Y <a href="#" class="card-link">Mostrar Estacion en el Mapa</a>
+                    <b>Geolocacion: </b> X | Y <a href="#" class="card-link">Mostrar Estacion en el Mapa (Geo ToDo)</a>
                   </div>
                 </div>
                 <div v-show="isShow && stationId == station.id">

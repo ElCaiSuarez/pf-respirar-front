@@ -14,7 +14,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="user in users" :key="user.id" v-on:click="getMyStation(user.id)">
+                        <tr v-for="user in users" :key="user.id" v-on:click="getMyStation(user)">
                             <th scope="row">{{ user.id }}</th>
                             <td>{{ user.username }}</td>
                             <td>{{ user.email }}</td>
@@ -25,9 +25,18 @@
             </div>
         </div>
         <div class="margin-top-10" v-show="!seleccionarUsuario">
-            <div v-if="isAdmin">
-                <h2 class="margin-end-20">Estaciones RespirAR | Admin</h2>
-                <button @click="mostrarCrear(userSelected)" class="btn btn-success margin-end-20">
+            
+                <h2 class="margin-end-20"
+                v-if="isAdmin"
+                >Mis Estaciones | Admin</h2>
+                <h2 class="margin-end-20"
+                v-if="!isAdmin"
+                >Mis Estaciones | User</h2>
+                <button 
+                    @click="mostrarCrear(userSelected)" 
+                    class="btn btn-success margin-end-20"
+                    v-if="isAdmin"
+                    >
                     Crear estacion RespirAR
                 </button>
                 <div class="alert alert-success" v-show="crear">
@@ -111,10 +120,7 @@
                             Borrar</button><br />
                     </div>
                 </div>
-            </div>
-            <div v-else>
-                <label class="alert alert-secondary">Solo los usuarios Admin puden crear estaciones RespirAR</label>
-            </div>
+            
             <div v-show="mostrarError">
                 <label class="alert alert-danger">{{ mensajeError }}</label>
             </div>
@@ -185,11 +191,11 @@ export default {
             this.mostrarOk = false;
             this.mostrarError = false;
         },
-        async getMyStation(userId) {
+        async getMyStation(user) {
             try {
-                this.isAdmin = userId === 1;
-                this.userSelected = userId;
-                this.stations = await stationService.getMyStation(userId);
+                this.isAdmin = user.type === "ADMIN";
+                this.userSelected = user.id;
+                this.stations = await stationService.getMyStation(user.id);
                 this.stationsTotal = await stationService.getStation();
                 this.seleccionarUsuario = false;
             } catch (e) {
