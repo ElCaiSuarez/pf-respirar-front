@@ -5,6 +5,9 @@ async function createStation(req,res) {
     try{
         var station = req.body; 
         station.type = "RESPIRAR";
+        station.relativeHumidity = 0,
+        station.temperature = 0,
+        station.NO2 = 0
         await Station.create(station);
         await Fiware.createStation(station)
         res.status(200).send(station);

@@ -46,15 +46,22 @@
                     <input v-model="stationPostDescription" required /><br />
                     <label>Numero de Serie </label><br />
                     <input v-model="stationPostSerial" required /><br />
+                    <label>Latitud </label><br />
+                    <input v-model="applicationPostLatitude" required /><br />
+                    <label>Longitud </label><br />
+                    <input v-model="applicationPostLongitude" required /><br />
                     <span v-if="!this.validateLongitud(stationPostName, 4, 20)">El nombre tiene que tener entre 4 y 20
                         caracteres</span><br />
                     <span v-if="!this.validateLongitud(stationPostDescription, 4, 40)">La descripción tiene que tener entre
                         4 y 40 caracteres</span><br />
                     <span v-if="!this.validateLongitud(stationPostSerial, 4, 10)">El serial tiene que tener entre 4 y 10
                         caracteres</span><br />
-                    <button @click="createStation(stationPost)" class="btn btn-success mb-3" v-if="this.validateLongitud(stationPostName, 4, 20) &&
+                    <button @click="createStation(stationPost)" class="btn btn-success mb-3" 
+                        v-if="this.validateLongitud(stationPostName, 4, 20) &&
                         this.validateLongitud(stationPostDescription, 4, 40) &&
-                        this.validateLongitud(stationPostSerial, 4, 10)
+                        this.validateLongitud(stationPostSerial, 4, 10)&&
+                        this.validateLongitud(applicationPostLatitude, 4, 10) &&
+                        this.validateLongitud(applicationPostLongitude, 4, 10)
                         ">
                         Guardar</button><br />
                 </div>

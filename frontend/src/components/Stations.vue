@@ -25,14 +25,14 @@
                     <b>Usuario: </b>{{ station.userId }}
                   </div>
                   <div class="card-title">
-                    <b>Geolocacion: </b> X | Y <a href="#" class="card-link">Mostrar Estacion en el Mapa (Geo ToDo)</a>
+                    <b>Geolocacion: </b> {{ station.latitude }} | {{ station.longitude }} <a href="#" class="card-link">Mostrar Estacion en el Mapa (Geo ToDo)</a>
                   </div>
                 </div>
                 <div v-show="isShow && stationId == station.id">
                   <ul class="list-group list-group-flush">
-                    <li class="list-group-item"><b>Sensor de temperatura y humedad: </b> Ultimo Dato</li>
-                    <li class="list-group-item"><b>Sensor de partículas:</b> Ultimo Dato</li>
-                    <li class="list-group-item"><b>Sensor de NO2:</b> Ultimo Dato</li>
+                    <li class="list-group-item"><b>Sensor de temperatura: </b> {{station.temperature}}</li>
+                    <li class="list-group-item"><b>Sensor de humedad relativa :</b> {{station.relativeHumidity}}</li>
+                    <li class="list-group-item"><b>Sensor de NO2:</b> {{station.NO2}}</li>
                   </ul>
                 </div>
               </div>

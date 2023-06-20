@@ -74,6 +74,9 @@ async function acceptApplicationById(req, res) {
             userId: application.userId,
             latitude: application.latitude,
             longitude: application.longitude,
+            relativeHumidity: 0,
+            temperature: 0,
+            NO2: 0,
             deleted: false,
         }
         await Application.save(application);

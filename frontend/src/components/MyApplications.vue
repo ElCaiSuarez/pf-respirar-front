@@ -44,6 +44,10 @@
           <input v-model="applicationPostDescription" required /><br />
           <label>Numero de Serie </label><br />
           <input v-model="applicationPostSerial" required /><br />
+          <label>Latitud </label><br />
+          <input v-model="applicationPostLatitude" required /><br />
+          <label>Longitud </label><br />
+          <input v-model="applicationPostLongitude" required /><br />
           <span v-if="!this.validateLongitud(applicationPostName, 4, 20)"
             >Recordá que el nombre tiene que tener entre 4 y 20 caracteres</span
           ><br />
@@ -53,14 +57,16 @@
           ><br />
           <span v-if="!this.validateLongitud(applicationPostSerial, 4, 10)"
             >Recordá que el serial tiene que tener entre 4 y 10 caracteres</span
-          ><br />
+          >
           <button
             @click="createApplication(applicationPost)"
             class="btn btn-success mb-3"
             v-if="
               this.validateLongitud(applicationPostName, 4, 20) &&
               this.validateLongitud(applicationPostDescription, 4, 40) &&
-              this.validateLongitud(applicationPostSerial, 4, 10)
+              this.validateLongitud(applicationPostSerial, 4, 10) &&
+              this.validateLongitud(applicationPostLatitude, 4, 10) &&
+              this.validateLongitud(applicationPostLongitude, 4, 10)
             "
           >
             Guardar</button
@@ -276,6 +282,8 @@ export default {
       applicationPostName: "",
       applicationPostDescription: "",
       applicationPostSerial: "",
+      applicationPostLatitude: "",
+      applicationPostLongitude: "",
       application: {},
       users: [],
       user: 0,
@@ -352,6 +360,8 @@ export default {
         application.name = this.applicationPostName;
         application.description = this.applicationPostDescription;
         application.serial = this.applicationPostSerial;
+        application.latitude = this.applicationPostLatitude;
+        application.longitude = this.applicationPostLongitude;
         application.userId = this.userSelected;
         this.applications.push(
           await applicationService.postApplication(application)
