@@ -72,6 +72,8 @@ async function acceptApplicationById(req, res) {
             serial: application.serial,
             type: "EXTERNA",
             userId: application.userId,
+            latitude: application.latitude,
+            longitude: application.longitude,
             deleted: false,
         }
         await Application.save(application);
