@@ -60,10 +60,17 @@ async function deleteById(req, res) {
     res.status(200).send(station);
 }
 
+async function simulate(req, res) {
+    req.body.id = parseInt(req.params.id)
+    await Station.save(req.body)
+    res.status(200).send(req.body);
+}
+
 module.exports = {
     createStation,
     listStations,
     getStationById,
     deleteById,
-    saveStation
+    saveStation,
+    simulate
 };

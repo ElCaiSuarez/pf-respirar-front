@@ -23,4 +23,8 @@ router.patch('/', async (req, res) => {
     return await stationController.saveStation(req, res);
 });
 
+router.put('/:id/simulate', async (req, res) => {
+    return await stationController.simulate(req, res);
+});
+
 module.exports = router;
