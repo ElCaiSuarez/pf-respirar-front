@@ -243,6 +243,8 @@ export default {
                 stationPost.latitude = this.stationPostLatitude;
                 stationPost.longitude = this.stationPostLongitude;
                 stationPost.userId = this.userSelected;
+                stationPost.latitude = this.stationPostLatitude;
+                stationPost.longitude = this.stationPostLongitude;
                 this.stations.push(await stationService.postStation(stationPost));
                 this.stationPostName = "";
                 this.stationPostDescription = "";
