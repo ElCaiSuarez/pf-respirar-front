@@ -64,6 +64,7 @@ async function rejectApplicationById(req, res) {
 
 async function acceptApplicationById(req, res) {
     try {
+        console.log("Accept Application")
         var application = await Application.getById(parseInt(req.params.id));
         application.status = "Aceptada";
         var station = {

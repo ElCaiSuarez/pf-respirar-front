@@ -369,6 +369,8 @@ export default {
         this.applicationPostName = "";
         this.applicationPostDescription = "";
         this.applicationPostSerial = "";
+        this.applicationPostLatitude = "";
+        this.applicationPostLongitude = "";
         this.crear = false;
         this.applicationPost = {};
         this.mensajeOk = "Solicitud Creada";
