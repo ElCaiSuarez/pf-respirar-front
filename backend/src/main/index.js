@@ -6,7 +6,7 @@ const cors = require("cors");
 //var Application = require('./models/application');
 //var Station = require('./models/station');
 
-const listeningPort = 3000
+const listeningPort = 3010
 
 app.use(bodyParser.json());
 app.use(cors());
