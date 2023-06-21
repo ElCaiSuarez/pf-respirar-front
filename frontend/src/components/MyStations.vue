@@ -47,21 +47,30 @@
                     <label>Numero de Serie </label><br />
                     <input v-model="stationPostSerial" required /><br />
                     <label>Latitud </label><br />
-                    <input v-model="stationPostLatitude" required /><br />
+                    <input type="number" v-model.number="stationPostLatitude" @keypress="isNumber($event)" required /><br />
                     <label>Longitud </label><br />
-                    <input v-model="stationPostLongitude" required /><br />
-                    <span v-if="!this.validateLongitud(stationPostName, 4, 20)">El nombre tiene que tener entre 4 y 20
-                        caracteres</span><br />
-                    <span v-if="!this.validateLongitud(stationPostDescription, 4, 40)">La descripción tiene que tener entre
-                        4 y 40 caracteres</span><br />
-                    <span v-if="!this.validateLongitud(stationPostSerial, 4, 10)">El serial tiene que tener entre 4 y 10
-                        caracteres</span><br />
+                    <input type="number" v-model.number="stationPostLongitude" @keypress="isNumber($event)" required /><br />
+                    <span v-if="!this.validateLongitud(stationPostName, 4, 20)"
+                        >Recordá que el nombre tiene que tener entre 4 y 20 caracteres</span
+                    ><br />
+                    <span v-if="!this.validateLongitud(stationPostDescription, 4, 40)"
+                        >Recordá que la descripción tiene que tener entre 4 y 40 caracteres</span
+                    ><br />
+                    <span v-if="!this.validateLongitud(stationPostSerial, 4, 10)"
+                        >Recordá que el serial tiene que tener entre 4 y 10 caracteres</span
+                    ><br />
+                    <span v-if="!this.validateNoVacio(stationPostLatitude)"
+                        >Recordá que la latitud no puede ser vacía ni 0</span
+                    ><br />
+                    <span v-if="!this.validateNoVacio(stationPostLongitude)"
+                        >Recordá que la longitud no puede ser vacía ni 0</span
+                    ><br />
                     <button @click="createStation(stationPost)" class="btn btn-success mb-3" 
                         v-if="this.validateLongitud(stationPostName, 4, 20) &&
                         this.validateLongitud(stationPostDescription, 4, 40) &&
-                        this.validateLongitud(stationPostSerial, 4, 10) &&
-                        this.validateLongitud(stationPostLatitude, 4, 10) &&
-                        this.validateLongitud(stationPostLongitude, 4, 10)
+                        this.validateLongitud(stationPostSerial, 4, 10)&&
+                        this.validateNoVacio(stationPostLatitude) &&
+                        this.validateNoVacio(stationPostLongitude)
                         ">
                         Guardar</button><br />
                 </div>
@@ -73,6 +82,8 @@
                                 <th scope="col">Nombre</th>
                                 <th scope="col">Descripcion</th>
                                 <th scope="col">Numero de Serie</th>
+                                <th scope="col">Latitud</th>
+                                <th scope="col">Longitud</th>
                                 <th scope="col">Tipo</th>
                                 <th></th>
                                 <th></th>
@@ -84,6 +95,8 @@
                                 <td>{{ station.name }}</td>
                                 <td>{{ station.description }}</td>
                                 <td>{{ station.serial }}</td>
+                                <td>{{ station.latitude }}</td>
+                                <td>{{ station.longitude }}</td>
                                 <td>{{ station.type }}</td>
                                 <td>
                                     <button @click="mostrarUpdate(station)" class="btn btn-primary mb-3">
@@ -102,16 +115,22 @@
                         <input v-model="stationForm.name" /><br />
                         <label>Descripcion </label><br />
                         <input v-model="stationForm.description" /><br />
+                        <label>Latitud </label><br />
+                        <input type="number" v-model.number="stationForm.latitude" @keypress="isNumber($event)" required /><br />
+                        <label>Longitud </label><br />
+                        <input type="number" v-model.number="stationForm.longitude" @keypress="isNumber($event)" required /><br />
                         <!-- <label>Numero de Serie </label><br /> -->
                         <!-- <input v-model="stationForm.serial" hidden/><br /><br /> -->
                         <span v-if="!this.validateLongitud(stationForm.name, 4, 20)">El nombre tiene que tener entre 4 y 20
                             caracteres</span><br />
                         <span v-if="!this.validateLongitud(stationForm.description, 4, 40)">La descripción tiene que tener
                             entre 4 y 40 caracteres</span><br />
+                            <span v-if="!this.validateNoVacio(stationForm.latitude)">Recordá que la latitud no puede ser vacía ni 0</span><br />
+                            <span v-if="!this.validateNoVacio(stationForm.longitude)">Recordá que la longitud no puede ser vacía ni 0</span><br />
                         <!-- <span v-if="!this.validateLongitud(stationForm.serial, 4, 10)">El serial tiene que tener entre 4 y
                             10 caracteres</span><br /> -->
                         <button @click="updateStation(stationForm)" class="btn btn-primary mb-3" v-if="this.validateLongitud(stationForm.name, 4, 20) &&
-                            this.validateLongitud(stationForm.description, 4, 40)
+                            this.validateLongitud(stationForm.description, 4, 40) && this.validateNoVacio(stationForm.latitude) && this.validateNoVacio(stationForm.longitude)
                             ">
                             Guardar</button><br />
                     </div>
@@ -122,7 +141,11 @@
                         <label>Descripcion </label><br />
                         <input v-model="stationForm.description" disabled /><br />
                         <label>Numero de Serie </label><br />
-                        <input v-model="stationForm.serial" disabled /><br /><br />
+                        <input v-model="stationForm.serial" disabled /><br />
+                        <label>Latitud </label><br />
+                        <input v-model="stationForm.latitude" disabled/><br />
+                        <label>Longitud </label><br />
+                        <input v-model="stationForm.longitude" disabled/><br /><br />
                         <button @click="deleteStation(stationForm)" class="btn btn-danger mb-3">
                             Borrar</button><br />
                     </div>
@@ -217,6 +240,8 @@ export default {
                 stationPost.name = this.stationPostName;
                 stationPost.description = this.stationPostDescription;
                 stationPost.serial = this.stationPostSerial;
+                stationPost.latitude = this.stationPostLatitude;
+                stationPost.longitude = this.stationPostLongitude;
                 stationPost.userId = this.userSelected;
                 stationPost.latitude = this.stationPostLatitude;
                 stationPost.longitude = this.stationPostLongitude;
@@ -254,6 +279,27 @@ export default {
             }
             return result;
         },
+        validateNoVacio(nombre) {
+            var result = false
+            if(nombre != null && nombre != 0)
+            {
+                result = true
+            }
+            return result
+        },
+        isNumber: function(evt) 
+        {
+        evt = (evt) ? evt : window.event;
+        var charCode = (evt.which) ? evt.which : evt.keyCode;
+        if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46 && charCode !== 45) 
+        {
+            evt.preventDefault();;
+        } 
+        else 
+        {
+            return true;
+        }
+        },
         async mostrarUpdate(station) {
             this.crear = false;
             this.borrar = false;
@@ -265,6 +311,8 @@ export default {
             this.stationForm.description = station.description;
             this.stationForm.serial = station.serial;
             this.stationForm.userId = station.userId;
+            this.stationForm.latitude = station.latitude;
+            this.stationForm.longitude = station.longitude;
             //this.serialProvi = station.serial;
         },
         async updateStation(stationForm) {
@@ -301,6 +349,8 @@ export default {
             this.stationForm.description = station.description;
             this.stationForm.serial = station.serial;
             this.stationForm.userId = station.userId;
+            this.stationForm.latitude = station.latitude;
+            this.stationForm.longitude = station.longitude;
         },
         async deleteStation(stationForm) {
             try {

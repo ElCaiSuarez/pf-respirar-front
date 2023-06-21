@@ -45,19 +45,24 @@
           <label>Numero de Serie </label><br />
           <input v-model="applicationPostSerial" required /><br />
           <label>Latitud </label><br />
-          <input v-model="applicationPostLatitude" required /><br />
+          <input type="number" v-model.number="applicationPostLatitude" @keypress="isNumber($event)" required /><br />
           <label>Longitud </label><br />
-          <input v-model="applicationPostLongitude" required /><br />
+          <input type="number" v-model.number="applicationPostLongitude" @keypress="isNumber($event)" required /><br />
           <span v-if="!this.validateLongitud(applicationPostName, 4, 20)"
             >Recordá que el nombre tiene que tener entre 4 y 20 caracteres</span
           ><br />
           <span v-if="!this.validateLongitud(applicationPostDescription, 4, 40)"
-            >Recordá que la descripción tiene que tener entre 4 y 40
-            caracteres</span
+            >Recordá que la descripción tiene que tener entre 4 y 40 caracteres</span
           ><br />
           <span v-if="!this.validateLongitud(applicationPostSerial, 4, 10)"
             >Recordá que el serial tiene que tener entre 4 y 10 caracteres</span
-          >
+          ><br />
+          <span v-if="!this.validateNoVacio(applicationPostLatitude)"
+            >Recordá que la latitud no puede ser vacía ni 0</span
+          ><br />
+          <span v-if="!this.validateNoVacio(applicationPostLongitude)"
+            >Recordá que la longitud no puede ser vacía ni 0</span
+          ><br />
           <button
             @click="createApplication(applicationPost)"
             class="btn btn-success mb-3"
@@ -65,8 +70,8 @@
               this.validateLongitud(applicationPostName, 4, 20) &&
               this.validateLongitud(applicationPostDescription, 4, 40) &&
               this.validateLongitud(applicationPostSerial, 4, 10) &&
-              this.validateLongitud(applicationPostLatitude, 4, 10) &&
-              this.validateLongitud(applicationPostLongitude, 4, 10)
+              this.validateNoVacio(applicationPostLatitude) &&
+              this.validateNoVacio(applicationPostLongitude)
             "
           >
             Guardar</button
@@ -80,6 +85,8 @@
                 <th scope="col">Nombre</th>
                 <th scope="col">Descripcion</th>
                 <th scope="col">Numero de Serie</th>
+                <th scope="col">Latitud</th>
+                <th scope="col">Longitud</th>
                 <th scope="col">Estado</th>
                 <th></th>
                 <th></th>
@@ -95,6 +102,8 @@
                 <td>{{ application.name }}</td>
                 <td>{{ application.description }}</td>
                 <td>{{ application.serial }}</td>
+                <td>{{ application.latitude }}</td>
+                <td>{{ application.longitude }}</td>
                 <td>{{ application.status }}</td>
                 <td>
                   <button
@@ -123,6 +132,10 @@
             <input v-model="applicationForm.name" /><br />
             <label>Descripcion </label><br />
             <input v-model="applicationForm.description" /><br />
+            <label>Latitud </label><br />
+            <input type="number" v-model.number="applicationForm.latitude" @keypress="isNumber($event)" required /><br />
+            <label>Longitud </label><br />
+            <input type="number" v-model.number="applicationForm.longitude" @keypress="isNumber($event)" required /><br />
             <!-- <label>Numero de Serie </label><br />
             <input v-model="applicationForm.serial" required /><br /> -->
             <span v-if="!this.validateLongitud(applicationForm.name, 4, 20)"
@@ -134,6 +147,12 @@
               >Recordá que la descripción tiene que tener entre 4 y 40
               caracteres</span
             ><br />
+            <span v-if="!this.validateNoVacio(applicationForm.latitude)"
+              >Recordá que la latitud no puede ser vacía ni 0</span
+            ><br />
+            <span v-if="!this.validateNoVacio(applicationForm.longitude)"
+              >Recordá que la longitud no puede ser vacía ni 0</span
+            ><br />
             <!-- <span v-if="!this.validateLongitud(applicationForm.serial, 4, 10)"
               >Recordá que el serial tiene que tener entre 4 y 10
               caracteres</span
@@ -143,7 +162,9 @@
               class="btn btn-primary mb-3"
               v-if="
                 this.validateLongitud(applicationForm.name, 4, 20) &&
-                this.validateLongitud(applicationForm.description, 4, 40) /* &&
+                this.validateLongitud(applicationForm.description, 4, 40) &&
+                this.validateNoVacio(applicationForm.latitude) &&
+                this.validateNoVacio(applicationForm.longitude) /* &&
                 this.validateLongitud(applicationForm.serial, 4, 10) */
               "
             >
@@ -157,7 +178,11 @@
             <label>Descripcion </label><br />
             <input v-model="applicationForm.description" disabled /><br />
             <label>Numero de Serie </label><br />
-            <input v-model="applicationForm.serial" disabled /><br /><br />
+            <input v-model="applicationForm.serial" disabled /><br />
+            <label>Latitud </label><br />
+            <input type="number" v-model.number="applicationForm.latitude" @keypress="isNumber($event)" disabled /><br />
+            <label>Longitud </label><br />
+            <input type="number" v-model.number="applicationForm.longitude" @keypress="isNumber($event)" disabled /><br /><br />
             <button
               @click="deleteApplication(applicationForm)"
               class="btn btn-danger mb-3"
@@ -177,6 +202,8 @@
                 <th scope="col">Nombre</th>
                 <th scope="col">Descripcion</th>
                 <th scope="col">Numero de Serie</th>
+                <th scope="col">Latitud</th>
+                <th scope="col">Longitud</th>
                 <th scope="col">Usuario</th>
                 <th scope="col">Estado</th>
                 <th></th>
@@ -193,6 +220,8 @@
                 <td>{{ application.name }}</td>
                 <td>{{ application.description }}</td>
                 <td>{{ application.serial }}</td>
+                <td>{{ application.latitude }}</td>
+                <td>{{ application.longitude }}</td>
                 <td>{{ application.userId }}</td>
                 <td>{{ application.status }}</td>
                 <td>
@@ -224,6 +253,10 @@
             <input v-model="applicationForm.description" disabled /><br />
             <label>Numero de Serie </label><br />
             <input v-model="applicationForm.serial" disabled /><br />
+            <label>Latitud </label><br />
+            <input type="number" v-model.number="applicationForm.latitude" @keypress="isNumber($event)" disabled /><br />
+            <label>Longitud </label><br />
+            <input type="number" v-model.number="applicationForm.longitude" @keypress="isNumber($event)" disabled /><br />
             <label>Usuario </label><br />
             <input v-model="applicationForm.userId" disabled /><br />
             <label>Estado </label><br />
@@ -243,6 +276,10 @@
             <input v-model="applicationForm.description" disabled /><br />
             <label>Numero de Serie </label><br />
             <input v-model="applicationForm.serial" disabled /><br />
+            <label>Latitud </label><br />
+            <input type="number" v-model.number="applicationForm.latitude" @keypress="isNumber($event)" disabled /><br />
+            <label>Longitud </label><br />
+            <input type="number" v-model.number="applicationForm.longitude" @keypress="isNumber($event)" disabled /><br />
             <label>Usuario </label><br />
             <input v-model="applicationForm.userId" disabled /><br />
             <label>Estado </label><br />
@@ -399,6 +436,28 @@ export default {
       }
       return result;
     },
+    validateNoVacio(nombre) 
+    {
+      var result = false
+      if(nombre != null && nombre != 0)
+        {
+          result = true
+        }
+          return result
+      },
+    isNumber: function(evt) 
+    {
+      evt = (evt) ? evt : window.event;
+      var charCode = (evt.which) ? evt.which : evt.keyCode;
+      if ((charCode > 31 && (charCode < 48 || charCode > 57)) && charCode !== 46 && charCode !== 45) 
+      {
+        evt.preventDefault();;
+      } 
+      else 
+      {
+        return true;
+      }
+    },
     isPendingOrAccepted(estado) {
       return estado == "Aceptada" || estado == "Pendiente";
     },
@@ -415,6 +474,8 @@ export default {
       this.applicationForm.name = application.name;
       this.applicationForm.description = application.description;
       this.applicationForm.serial = application.serial;
+      this.applicationForm.latitude = application.latitude;
+      this.applicationForm.longitude = application.longitude;
       this.applicationForm.userId = application.userId;
       this.applicationForm.status = application.status;
       //this.serialProvi = application.serial;
@@ -456,6 +517,8 @@ export default {
       this.applicationForm.name = application.name;
       this.applicationForm.description = application.description;
       this.applicationForm.serial = application.serial;
+      this.applicationForm.latitude = application.latitude;
+      this.applicationForm.longitude = application.longitude;
       this.applicationForm.userId = application.userId;
       this.applicationForm.status = application.status;
     },
@@ -493,6 +556,8 @@ export default {
       this.applicationForm.name = application.name;
       this.applicationForm.description = application.description;
       this.applicationForm.serial = application.serial;
+      this.applicationForm.latitude = application.latitude;
+      this.applicationForm.longitude = application.longitude;
       this.applicationForm.status = application.status;
       this.applicationForm.userId = application.userId;
     },
@@ -533,6 +598,8 @@ export default {
       this.applicationForm.name = application.name;
       this.applicationForm.description = application.description;
       this.applicationForm.serial = application.serial;
+      this.applicationForm.latitude = application.latitude;
+      this.applicationForm.longitude = application.longitude;
       this.applicationForm.status = application.status;
       this.applicationForm.userId = application.userId;
     },
