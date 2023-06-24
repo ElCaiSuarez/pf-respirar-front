@@ -1,215 +1,48 @@
-# Meetup API
+# RespirAR - Modulo Estaciones
+Proyecto Link - ORT
 
- Is an API that allows organizations to create meetups.
 
 
-## Installation
+## Recommended IDE Setup
 
-Install [NodeJs](https://nodejs.org/en/download/)
+[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
 
-The package manager needed, npm, is installed with NodeJs.
+## Customize configuration
 
-## Check NodeJS and npm version
+See [Vite Configuration Reference](https://vitejs.dev/config/).
 
-The NodeJS version need is 10.19.0 or superior.
+## Project Setup
 
-The npm version need is 6.14.4 or superior.
-
-```bash
-node -v
-```
-```bash
-npm -v
-```
-
-## Download dependencies
-
-```bash
+```sh
 npm install
 ```
 
-## Database
+### Compile and Hot-Reload for Development
 
-Use mongoDB to create a database for this API, in src/index.js you can modify the port and schema name (default schema name: meetup and port: 27017).
+FRONT:
 
-## Run
+npm run dev
 
-To run the api execute the command 
-```bash
+BACK:
+
 npm run-script run
-```
 
-## Endpoints
-
-POST /user/create
-
-```bash
-curl --location --request POST 'http://localhost:3000/user/create' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "name": "Juan",
-    "role": "admin"
-}'
-```
-Response
-
-```bash
+Endpoints:
+localhost:3000/station/
+localhost:3000/station/?userId=1
+POST Body:
 {
-    "user": {
-        "meetups": [],
-        "_id": "5f20a4e43edbde8d6a820f5f",
-        "name": "Juan",
-        "role": "admin",
-        "__v": 0
-    }
+    "name": "Text station",
+    "description": "Text station description",
+    "userId": 2
 }
-```
-
-POST /meetup/create
-
-Comment: Date has to be in the format YYYY-MM-DD and cannot be schedule after 5 days from current day because of limitations in the weather forecast API (https://openweathermap.org/api).
-
-```bash
-curl --location --request POST 'http://localhost:3000/meetup/create' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "date": "2020-07-30",
-    "description": "Meetup test",
-    "user_id": "5f20a4e43edbde8d6a820f5f"
-}'
-```
-
-Response
-
-```bash
-{
-    "meetup": {
-        "users": [],
-        "_id": "5f20a5bc986b4d8ed9fec585",
-        "date": "2020-07-30",
-        "description": "Meetup test",
-        "__v": 0
-    }
+localhost:3000/user
+ {
+    "username": "juancarlos",
+    "email": "juancarlos@gmail.com"
 }
-```
+### Compile and Minify for Production
 
-PUT /meetup/checkin
-
-```bash
-curl --location --request PUT 'http://localhost:3000/meetup/checkin' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "user_id": "5f20a4e43edbde8d6a820f5f",
-    "meetup_id": "5f20a5bc986b4d8ed9fec585"
-} '
-```
-
-Response example:
-```bash
-{
-    "user": {
-        "meetups": [
-            {
-                "users": [],
-                "_id": "5f20a5bc986b4d8ed9fec585",
-                "date": "2020-07-30",
-                "description": "Meetup test",
-                "__v": 0
-            }
-        ],
-        "_id": "5f20a702986b4d8ed9fec586",
-        "name": "Pepe",
-        "role": "user",
-        "__v": 1
-    }
-}
-```
-PUT /meetup/join
-
-```bash
-curl --location --request PUT 'http://localhost:3000/meetup/join' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "user_id": "5f20a702986b4d8ed9fec586",
-    "meetup_id": "5f20a5bc986b4d8ed9fec585"
-} '
-```
-
-Response
-```bash
-{
-    "meetup": {
-        "users": [
-            {
-                "meetups": [
-                    "5f20a5bc986b4d8ed9fec585"
-                ],
-                "_id": "5f20a702986b4d8ed9fec586",
-                "name": "Pepe",
-                "role": "user",
-                "__v": 1
-            }
-        ],
-        "_id": "5f20a5bc986b4d8ed9fec585",
-        "date": "2020-07-30",
-        "description": "Meetup test",
-        "__v": 1
-    }
-}
-```
-
-GET /meetup/list
-
-```bash
-curl --location --request GET 'http://localhost:3000/meetup/list'
-```
-
-Response
-```bash
-[
-    {
-        "users": [
-            "5f20a702986b4d8ed9fec586"
-        ],
-        "_id": "5f20a5bc986b4d8ed9fec585",
-        "date": "2020-07-30",
-        "description": "Meetup test",
-        "__v": 1
-    }
-]
-```
-
-GET /birras
-
-```bash
-curl --location --request GET 'http://localhost:3000/birras/' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "meetup_id": "5f20a5bc986b4d8ed9fec585",
-    "user_id": "5f20a4e43edbde8d6a820f5f"
-}'
-```
-
-Response
-```bash
-{
-    "beersToBuy": 6
-}
-```
-
-GET /meetup/weather
-
-```bash
-curl --location --request GET 'http://localhost:3000/meetup/weather' \
---header 'Content-Type: application/json' \
---data-raw '{
-    "meetup_id": "5f20a5bc986b4d8ed9fec585",
-    "user_id": "5f20a4e43edbde8d6a820f5f"
-}'
-```
-Response
-```bash
-{
-    "temperatureOfMeetupDay": 7.79
-}
+```sh
+npm run build
 ```
